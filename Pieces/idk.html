@@ -2,14 +2,130 @@
 <html lang="en-US">
 <head>
 <style>
-.chat {
-	height: 500px;
-	border: 5px solid gray;
-}
+	.white-piece, .black-piece, .white-king, .black-king {
+		width: 60px;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;	
+		margin-top: 7.5px;
+		margin-bottom: auto;
+	}
+	.white-piece {
+		content: url(White-king.png);
+	}
+	.black-piece {
+		content: url(Black-king.png);
+	}
+	.board {
+		width: 600px;
+		height: 600px;
+	}
+	.white, .black {
+		float: left;
+		width: 75px;
+		height: 75px;
+		font-size: 73px;
+		display: table-cell;
+	}
+	.white {
+		background-image: url("white wood.jpg");
+	}
+	.black {
+		background-image: url("dark wood.jpg");
+	}
+	.chat {
+		height: 500px;
+		border: 5px solid gray;
+	}
 </style>
 </head>
 
 <body>
+	<div class="board">
+		<!-- Row 1 -->
+		<div class="white"></div>
+		<div class="black" data-row="1" data-column="2"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="1" data-column="4"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="1" data-column="6"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="1" data-column="8"><img class="black-piece"></div>
+
+		<!-- Row 2 -->
+		<div class="black" data-row="2" data-column="1"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="2" data-column="3"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="2" data-column="5"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="2" data-column="7"><img class="black-piece"></div>
+		<div class="white"></div>
+		
+		<!-- Row 3 -->
+		<div class="white"></div>
+		<div class="black" data-row="3" data-column="2"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="3" data-column="4"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="3" data-column="6"><img class="black-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="3" data-column="8"><img class="black-piece"></div>
+
+		<!-- Row 4 -->
+		<div class="black" data-row="4" data-column="1"></div>
+		<div class="white"></div>
+		<div class="black" data-row="4" data-column="3"></div>
+		<div class="white"></div>
+		<div class="black" data-row="4" data-column="5"></div>
+		<div class="white"></div>
+		<div class="black" data-row="4" data-column="7"></div>
+		<div class="white"></div>
+
+		<!-- Row 5 -->
+		<div class="white"></div>
+		<div class="black" data-row="5" data-column="2"></div>
+		<div class="white"></div>
+		<div class="black" data-row="5" data-column="4"></div>
+		<div class="white"></div>
+		<div class="black" data-row="5" data-column="6"></div>
+		<div class="white"></div>
+		<div class="black" data-row="5" data-column="8"></div>
+		
+		<!-- Row 6 -->
+		<div class="black" data-row="6" data-column="1"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="6" data-column="3"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="6" data-column="5"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="6" data-column="7"><img class="white-piece"></div>
+		<div class="white"></div>
+		
+		<!-- Row 7 -->
+		<div class="white"></div>
+		<div class="black" data-row="7" data-column="2"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="7" data-column="4"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="7" data-column="6"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="7" data-column="8"><img class="white-piece"></div>
+		
+		<!-- Row 8 -->
+		<div class="black" data-row="8" data-column="1"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="8" data-column="3"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="8" data-column="5"><img class="white-piece"></div>
+		<div class="white"></div>
+		<div class="black" data-row="8" data-column="7"><img class="white-piece"></div>
+		<div class="white"></div>
+	</div>
+
+
+	<br>
+	<br>
 <table width="600" background="better board.png" border="0" cellpadding="0" cellspacing="0">
 <tbody>
 <tr height="75">
