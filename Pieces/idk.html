@@ -1,224 +1,225 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<head>
-<style>
-	.white-piece, .black-piece, .white-king, .black-king {
-		width: 60px;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;	
-		margin-top: 7.5px;
-		margin-bottom: auto;
-	}
-	.white-piece {
-		content: url(White-king.png);
-	}
-	.black-piece {
-		content: url(Black-king.png);
-	}
-	.board {
-		width: 600px;
-		height: 600px;
-	}
-	.white, .black {
-		float: left;
-		width: 75px;
-		height: 75px;
-		font-size: 73px;
-		display: table-cell;
-	}
-	.white {
-		background-image: url("white wood.jpg");
-	}
-	.black {
-		background-image: url("dark wood.jpg");
-	}
-	.chat {
-		height: 500px;
-		border: 5px solid gray;
-	}
-</style>
-</head>
+	<head>
+		<style>
+			.white-piece, .black-piece, .white-king, .black-king {
+				pointer-events: none;
+				width: 60px;
+				display: block;
+				margin-left: auto;
+				margin-right: auto;	
+				margin-top: 7.5px;
+				margin-bottom: auto;
+			}
+			.white-piece {
+				content: url(White.png);
+			}
+			.black-piece {
+				content: url(Black.png);
+			}
+			.white-king {
+				content: url(White-king.png);
+			}
+			.black-king {
+				content: url(Black-king.png);
+			}
 
-<body>
-	<div class="board">
-		<!-- Row 1 -->
-		<div class="white"></div>
-		<div class="black" data-row="1" data-column="2"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="1" data-column="4"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="1" data-column="6"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="1" data-column="8"><img class="black-piece"></div>
+			.board {
+				width: 600px;
+				height: 600px;
+        		display: table-cell;
+			}
+			.white, .black {
+				float: left;
+				width: 75px;
+				height: 75px;
+			}
+			.white {
+				background-image: url("white wood.jpg");
+			}
+			.black {
+				background-image: url("dark wood.jpg");
+			}
 
-		<!-- Row 2 -->
-		<div class="black" data-row="2" data-column="1"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="2" data-column="3"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="2" data-column="5"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="2" data-column="7"><img class="black-piece"></div>
-		<div class="white"></div>
-		
-		<!-- Row 3 -->
-		<div class="white"></div>
-		<div class="black" data-row="3" data-column="2"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="3" data-column="4"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="3" data-column="6"><img class="black-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="3" data-column="8"><img class="black-piece"></div>
+			.chat {
+				height: 500px;
+				border: 5px solid gray;
+			}
+		</style>
+	</head>
 
-		<!-- Row 4 -->
-		<div class="black" data-row="4" data-column="1"></div>
-		<div class="white"></div>
-		<div class="black" data-row="4" data-column="3"></div>
-		<div class="white"></div>
-		<div class="black" data-row="4" data-column="5"></div>
-		<div class="white"></div>
-		<div class="black" data-row="4" data-column="7"></div>
-		<div class="white"></div>
+	<body>
+		<div style="float: left">
+			<div class="board">
+				<!-- Row 1 -->
+				<div class="white"></div>
+				<div class="black" data-row="1" data-column="2" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="1" data-column="4" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="1" data-column="6" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="1" data-column="8" data-piece="true"><img class="black-piece"></div>
 
-		<!-- Row 5 -->
-		<div class="white"></div>
-		<div class="black" data-row="5" data-column="2"></div>
-		<div class="white"></div>
-		<div class="black" data-row="5" data-column="4"></div>
-		<div class="white"></div>
-		<div class="black" data-row="5" data-column="6"></div>
-		<div class="white"></div>
-		<div class="black" data-row="5" data-column="8"></div>
-		
-		<!-- Row 6 -->
-		<div class="black" data-row="6" data-column="1"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="6" data-column="3"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="6" data-column="5"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="6" data-column="7"><img class="white-piece"></div>
-		<div class="white"></div>
-		
-		<!-- Row 7 -->
-		<div class="white"></div>
-		<div class="black" data-row="7" data-column="2"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="7" data-column="4"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="7" data-column="6"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="7" data-column="8"><img class="white-piece"></div>
-		
-		<!-- Row 8 -->
-		<div class="black" data-row="8" data-column="1"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="8" data-column="3"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="8" data-column="5"><img class="white-piece"></div>
-		<div class="white"></div>
-		<div class="black" data-row="8" data-column="7"><img class="white-piece"></div>
-		<div class="white"></div>
-	</div>
+				<!-- Row 2 -->
+				<div class="black" data-row="2" data-column="1" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="2" data-column="3" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="2" data-column="5" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="2" data-column="7" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				
+				<!-- Row 3 -->
+				<div class="white"></div>
+				<div class="black" data-row="3" data-column="2" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="3" data-column="4" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="3" data-column="6" data-piece="true"><img class="black-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="3" data-column="8" data-piece="true"><img class="black-piece"></div>
 
+				<!-- Row 4 -->
+				<div class="black" data-row="4" data-column="1" data-piece="false"></div>
+				<div class="white"></div>
+				<div class="black" data-row="4" data-column="3" data-piece="false"></div>
+				<div class="white"></div>
+				<div class="black" data-row="4" data-column="5" data-piece="false"></div>
+				<div class="white"></div>
+				<div class="black" data-row="4" data-column="7" data-piece="false"></div>
+				<div class="white"></div>
 
-	<br>
-	<br>
-<table width="600" background="better board.png" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr height="75">
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-</tr>
-<tr height="75">
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-</tr>
-<tr height="75">
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="Black.png" width="60"> </img> </td>
-</tr>
-<tr height="75">
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-</tr>
-<tr height="75">
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-<td width="75">&nbsp;</td>
-</tr>
-<tr height="75">
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-</tr>
-<tr height="75">
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-</tr>
-<tr height="73">
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-<td width="75" valign="middle" align="center"><img src="White.png" width="60"> </img> </td>
-<td width="75">&nbsp;</td>
-</tr>
-</tbody>
-</table>
-<br>
-<div class="chat" height="300">
-</div>
+				<!-- Row 5 -->
+				<div class="white"></div>
+				<div class="black" data-row="5" data-column="2" data-piece="false"></div>
+				<div class="white"></div>
+				<div class="black" data-row="5" data-column="4" data-piece="false"></div>
+				<div class="white"></div>
+				<div class="black" data-row="5" data-column="6" data-piece="false"></div>
+				<div class="white"></div>
+				<div class="black" data-row="5" data-column="8" data-piece="false"></div>
+				
+				<!-- Row 6 -->
+				<div class="black" data-row="6" data-column="1" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="6" data-column="3" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="6" data-column="5" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="6" data-column="7" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				
+				<!-- Row 7 -->
+				<div class="white"></div>
+				<div class="black" data-row="7" data-column="2" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="7" data-column="4" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="7" data-column="6" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="7" data-column="8" data-piece="true"><img class="white-piece"></div>
+				
+				<!-- Row 8 -->
+				<div class="black" data-row="8" data-column="1" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="8" data-column="3" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="8" data-column="5" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+				<div class="black" data-row="8" data-column="7" data-piece="true"><img class="white-piece"></div>
+				<div class="white"></div>
+			</div>
 
-<br>
-<form>
-	Please input your message:  
-	<input type="text" name="firstname"> <input type="submit" value="Send">
-</form>
+			
+			
+			<script>
+				let board = document.getElementsByClassName("board")[0];
+				let from = null;
+				let haveToJump = false;
+				console.log(from);
+				Array.from(board.children).forEach(function(cell) {
+					cell.onclick = function(elem) {
+						if (elem.target.getAttribute("data-piece") === "true") {
+							from = elem.target;
+							console.log(from);
+						}
+						else if (from && isLegalMove(from, elem.target)) {
+							elem.target.innerHTML = from.innerHTML;
+							from.innerHTML = "";
+							elem.target.setAttribute("data-piece", "true");
+							from.setAttribute("data-piece", "false");
+							from = null;
+						}
+					}
+				});
 
-</body>
+				function isLegalMove(from, to) {
+					let toRow = parseInt(to.getAttribute("data-row"));
+					let toColumn = parseInt(to.getAttribute("data-column"));
+					let fromRow = parseInt(from.getAttribute("data-row"));
+					let fromColumn = parseInt(from.getAttribute("data-column"));
+					
+					let legal = 1;
+					legal = legal && (toRow + toColumn) % 2 === 1;
+					if (from.children[0].getAttribute("class") === "white-piece") {
+						if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
+							legal = 0;
+						}
+						else if (Math.abs(fromRow - toRow) > 2) {
+							legal = 0;
+						}
+						else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
+							legal = 0;
+						}
+						else if (Math.abs(fromRow - toRow) == 2) {
+							let midRow = ((fromRow + toRow) / 2).toString();
+							let midColumn = ((fromColumn + toColumn) / 2).toString();
+							let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+							if (cell.getAttribute("data-piece") === "false") {
+								legal = 0;
+							}
+						}
+						else if (toRow >= fromRow) {
+							legal = 0;
+						}
+						
+					}
+					if (from.children[0].getAttribute("class") === "black-piece") {
+						if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
+							legal = 0;
+						}
+						else if (Math.abs(fromRow - toRow) > 2) {
+							legal = 0;
+						}
+						else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
+							legal = 0;
+						}
+						else if (Math.abs(fromRow - toRow) == 2) {
+							let midRow = ((fromRow + toRow) / 2).toString();
+							let midColumn = ((fromColumn + toColumn) / 2).toString();
+							let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+							if (cell.getAttribute("data-piece") === "false") {
+								legal = 0;
+							}
+						}
+						else if (toRow <= fromRow) {
+							legal = 0;
+						}
+					}
+					return legal;
+				}
+			</script>
+		</div>
+		<div style="float: right" width=auto>
+			<div class="chat" style="height: 500px"></div>
+
+			<br>
+			<form>
+				Please input your message:  
+				<input type="text" name="firstname"> <input type="submit" value="Send">
+			</form>
+		</div>
+	</body>
 </html>
