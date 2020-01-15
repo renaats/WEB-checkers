@@ -4,7 +4,7 @@
 		<style>
 			.white-piece, .black-piece, .white-king, .black-king {
 				pointer-events: none;
-				width: 60px;
+				height: 60px; 
 				display: block;
 				margin-left: auto;
 				margin-right: auto;	
@@ -180,6 +180,13 @@
 							if (cell.getAttribute("data-piece") === "false") {
 								legal = 0;
 							}
+							else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
+								cell.innerHTML = "";
+								cell.setAttribute("data-piece", "false");
+							}
+							else {
+								legal = 0;
+							}
 						}
 						else if (toRow >= fromRow) {
 							legal = 0;
@@ -201,6 +208,13 @@
 							let midColumn = ((fromColumn + toColumn) / 2).toString();
 							let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							if (cell.getAttribute("data-piece") === "false") {
+								legal = 0;
+							}
+							else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
+								cell.innerHTML = "";
+								cell.setAttribute("data-piece", "false");
+							}
+							else {
 								legal = 0;
 							}
 						}
