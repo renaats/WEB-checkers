@@ -3,14 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-var stats = require("./stats");
-
-var app = express();
-
+var stats = require("./statistics");
 var express = require("express");
 var http = require("http");
 var websocket = require("ws");
@@ -48,7 +43,11 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 app.get("/stats/", function(req, res, next) {
-  res.sendFile(__dirname + '/stats.js');  
+  res.sendFile(__dirname + '/statistics.js');  
+});
+
+app.get("/updateStats/", function(req, res) {
+  res.json(stats);
 });
 
 // catch 404 and forward to error handler
@@ -68,12 +67,8 @@ app.use(function(err, req, res, next) {
 });
 
 wss.on("connection", function(ws) {
-  setTimeout(function() {
-    console.log("Connection state: "+ ws.readyState);
-    ws.send("Thanks for the message. --Your server.");
-    ws.close();
-    console.log("Connection state: "+ ws.readyState);
-  }, 2000);
+  stats.playersOnline = parseInt(stats.playersOnline) + 1;
+  console.log(stats.playersOnline);
   ws.on("message", function incoming(message) {
       console.log("[LOG] " + message);
   });
