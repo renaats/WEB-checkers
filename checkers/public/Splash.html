@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Draughts</h1>
-<form action="/play" method="get">
-    <button>Play!</button>
-</form>
-<p>25 Games Played!</p>
-<p>69 Moves Made!!!</p>
-<p>8 Players Online!</p>
+    <body>
+        <h1>Draughts</h1>
+        <form action="/play" method="get">
+            <button>Play!</button>
+        </form>
+        <p><span id="gamesPlayed">Unknown</span> Games Played!</p>
+        <p><span id="movesMade">Unknown</span> Moves Made!!!</p>
+        <p><span id="playersOnline">Unknown</span> Players Online!</p>
+        <main>
+            Status: <span id="hello"></span>
+        </main>
 
-</body>
+        <!-- Poor coding standard, only for demonstration purposes.
+             JavaScript code should not be part of HTML documents.
+        -->
+        <script>
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function(event){
+                document.getElementById("hello").innerHTML = event.data;
+            }
+
+            socket.onopen = function(){
+                socket.send("Hello from the client!");
+                document.getElementById("hello").innerHTML = "Sending a first message to the server ...";
+            };
+        </script>
+    </body>
+    <script src='/stats'></script>
+    <script>
+        document.getElementById("gamesPlayed").innerHTML = gameStatus.gamesPlayed;
+        document.getElementById("movesMade").innerHTML = gameStatus.movesMade;
+        document.getElementById("playersOnline").innerHTML = gameStatus.playersOnline;
+    </script>
 </html>

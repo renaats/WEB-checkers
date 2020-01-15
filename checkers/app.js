@@ -7,13 +7,29 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var stats = require("./stats");
+
 var app = express();
 
 var express = require("express");
 var http = require("http");
+var websocket = require("ws");
 
 var port = process.argv[2];
 var app = express();
+
+var server = http.createServer(app);
+const wss = new websocket.Server({ server });
+
+// app.use(function(req, res, next) {
+// 	console.log('[LOG] %s\t%s\t%s\t%s',
+// 		new Date().toISOString(), // timestamp
+// 		req.connection.remoteAddress, // client's address
+// 		req.method, // HTTP method
+// 		req.url // requested URL
+// 	);
+// 	next(); // call on to next component
+// });
 
 app.use(express.static(__dirname + "/public"));
 http.createServer(app).listen(port);
@@ -31,6 +47,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.get("/stats/", function(req, res, next) {
+  res.sendFile(__dirname + '/stats.js');  
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -47,4 +67,18 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+wss.on("connection", function(ws) {
+  setTimeout(function() {
+    console.log("Connection state: "+ ws.readyState);
+    ws.send("Thanks for the message. --Your server.");
+    ws.close();
+    console.log("Connection state: "+ ws.readyState);
+  }, 2000);
+  ws.on("message", function incoming(message) {
+      console.log("[LOG] " + message);
+  });
+});
+
 module.exports = app;
+
+server.listen(3001);
