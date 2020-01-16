@@ -17,19 +17,20 @@
         -->
         <script>
             var socket = new WebSocket("ws://localhost:3001");
-            socket.onmessage = function(event){
-                document.getElementById("hello").innerHTML = event.data;
-            }
 
             socket.onopen = function(){
                 socket.send("Hello from the client!");
                 document.getElementById("hello").innerHTML = "Sending a first message to the server ...";
             };
+            socket.onmessage = function(event){
+                document.getElementById("hello").innerHTML = event.data;
+            };
+
         </script>
     </body>
 
 
-    
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
         document.addEventListener("load", reload());

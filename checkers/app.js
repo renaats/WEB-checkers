@@ -67,10 +67,13 @@ app.use(function(err, req, res, next) {
 });
 
 wss.on("connection", function(ws) {
-  stats.playersOnline = parseInt(stats.playersOnline) + 1;
+  stats.playersOnline++;
   console.log(stats.playersOnline);
   ws.on("message", function incoming(message) {
       console.log("[LOG] " + message);
+  });
+  ws.on("close", function() {
+    stats.playersOnline--;
   });
 });
 
