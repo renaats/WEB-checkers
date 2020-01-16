@@ -9,6 +9,7 @@ var stats = require("./statistics");
 var express = require("express");
 var http = require("http");
 var websocket = require("ws");
+var messages = require("./public/javascripts/messages");
 
 var port = process.argv[2];
 var app = express();
