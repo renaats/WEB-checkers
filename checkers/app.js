@@ -86,6 +86,7 @@ app.use(function(err, req, res, next) {
 });
 
 wss.on("connection", function(ws) {
+  console.log("connected");
   stats.playersOnline++;
   let con = ws;
   con.id = connectionID++;
@@ -96,12 +97,12 @@ wss.on("connection", function(ws) {
     "Player %s placed in game %s as %s",
     con.id,
     currentGame.id,
-    playerType
+    playerType 
   );
 
   con.send(playerType == "A" ? messages.S_PLAYER_A : messages.S_PLAYER_B);
 
-  ws.on("message", function incoming(message) {
+  con.on("message", function incoming(message) {
       console.log("[LOG] " + message);
       let oMsg = JSON.parse(message);
 
@@ -115,14 +116,15 @@ wss.on("connection", function(ws) {
         console.log("Message from player B: " + message);
       }
   });
-  ws.on("close", function(code) {
+  con.on("close", function(code) {
+    console.log("disconnected");
     stats.playersOnline--;
     console.log(con.id + " disconnected ...");
     if (code == "1001") {
-        let gameObj = websockets[con.id];
+         let gameObj = websockets[con.id];
 
-        if (gameObj.isValidTransition(gameObj.gameState, "ABORTED")) {
-          gameObj.setStatus("ABORTED");
+        if (gameObj.isValidTransition(gameObj.gameState, "aborted")) {
+          gameObj.setStatus("aborted");
 
           try {
             gameObj.playerA.close();
@@ -136,6 +138,28 @@ wss.on("connection", function(ws) {
             gameObj.playerB = null;
           } catch (e) {
             console.log("Player B closing: " + e);
+          }
+        }
+        else if (gameObj.gameState === "2 joined") {
+          gameObj.setStatus("1 joined");
+          if (gameObj.playerA === con) {
+            gameObj.playerA = null;
+          } else {
+            gameObj.playerB = null;
+          }
+
+          try {
+            gameObj.playerB = null;
+          } catch (e) {
+            console.log("Player B closing: " + e);
+          }
+        }
+        else if (gameObj.gameState === "1 joined") {
+          gameObj.setStatus("0 joined");
+          if (gameObj.playerA === con) {
+            gameObj.playerA = null;
+          } else {
+            gameObj.playerB = null;
           }
         }
       }

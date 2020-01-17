@@ -18,7 +18,7 @@ game.prototype.transitionStates["aborted"] = 7;
 game.prototype.transitionMatrix = [
     [0, 1, 0, 0, 0, 0, 0, 0],
     [1, 0, 1, 0, 0, 0, 0, 0],
-    [0, 1, 0, 1, 1, 0, 0, 1],
+    [0, 1, 0, 1, 1, 0, 0, 0],
     [0, 0, 0, 1, 1, 1, 0, 1],
     [0, 0, 0, 1, 1, 0, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -108,6 +108,7 @@ game.prototype.addPlayer = function(p) {
     );
 
     if (this.gameState != "0 joined" && this.gameState != "1 joined") {
+        console.log(this.gameState);
         return new Error(
             "Invalid call to addPlayer, current state is %s",
             this.gameState
@@ -131,5 +132,9 @@ game.prototype.addPlayer = function(p) {
         return "B";
     }
 };
+
+game.prototype.startGame = function() {
+    this.setStatus("a move");
+}
 
 module.exports = game;
