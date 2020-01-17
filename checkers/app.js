@@ -10,12 +10,30 @@ var express = require("express");
 var http = require("http");
 var websocket = require("ws");
 var messages = require("./public/javascripts/messages");
+var Game = require("./game");
 
 var port = process.argv[2];
 var app = express();
-
+  
 var server = http.createServer(app);
 const wss = new websocket.Server({ server });
+
+var websockets = {};
+
+setInterval(function() {
+  for (let i in websockets) {
+    if (Object.prototype.hasOwnProperty.call(websockets,i)) {
+      let gameObj = websockets[i];
+      //if the gameObj has a final status, the game is complete/aborted
+      if (gameObj.finalStatus != null) {
+        delete websockets[i];
+      }
+    }
+  }
+}, 50000);
+
+var currentGame = new Game(stats.ongoingGames++);
+var connectionID = 0;
 
 // app.use(function(req, res, next) {
 // 	console.log('[LOG] %s\t%s\t%s\t%s',
@@ -69,12 +87,58 @@ app.use(function(err, req, res, next) {
 
 wss.on("connection", function(ws) {
   stats.playersOnline++;
-  console.log(stats.playersOnline);
+  let con = ws;
+  con.id = connectionID++;
+  let playerType = currentGame.addPlayer(con);
+  websockets[con.id] = currentGame;
+
+  console.log(
+    "Player %s placed in game %s as %s",
+    con.id,
+    currentGame.id,
+    playerType
+  );
+
+  con.send(playerType == "A" ? messages.S_PLAYER_A : messages.S_PLAYER_B);
+
   ws.on("message", function incoming(message) {
       console.log("[LOG] " + message);
+      let oMsg = JSON.parse(message);
+
+      let gameObj = websockets[con.id];
+      let isPlayerA = gameObj.playerA == con ? true : false;
+
+      if (isPlayerA) {
+        console.log("Message from player A: " + message);
+      }
+      else {
+        console.log("Message from player B: " + message);
+      }
   });
-  ws.on("close", function() {
+  ws.on("close", function(code) {
     stats.playersOnline--;
+    console.log(con.id + " disconnected ...");
+    if (code == "1001") {
+        let gameObj = websockets[con.id];
+
+        if (gameObj.isValidTransition(gameObj.gameState, "ABORTED")) {
+          gameObj.setStatus("ABORTED");
+
+          try {
+            gameObj.playerA.close();
+            gameObj.playerA = null;
+          } catch (e) {
+            console.log("Player A closing: " + e);
+          }
+
+          try {
+            gameObj.playerB.close();
+            gameObj.playerB = null;
+          } catch (e) {
+            console.log("Player B closing: " + e);
+          }
+        }
+      }
   });
 });
 
