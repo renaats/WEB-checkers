@@ -167,7 +167,7 @@
 						console.log(from);
 					}
 					else {
-						let move = isLegalMove(from, elem.target);
+						let move = isLegalMove(from, elem.target, 1);
 						if (from && move.legal && (!haveToJump || move.isJump)) {
 							Messages.O_MOVE_MADE.from = {
 								row: from.getAttribute("data-row"),
@@ -186,18 +186,22 @@
 				}
 			});
 
-			function isLegalMove(from, to) {
+			function isLegalMove(from, to, remove) {
 				let toRow = parseInt(to.getAttribute("data-row"));
 				let toColumn = parseInt(to.getAttribute("data-column"));
 				let fromRow = parseInt(from.getAttribute("data-row"));
 				let fromColumn = parseInt(from.getAttribute("data-column"));
 				
-				let legal = 1;
-				let jump = 0;
-				legal = legal && (toRow + toColumn) % 2 === 1;
+				let legal = 0;
+				if(isOnBoard(fromRow, fromColumn) && isOnBoard(toRow, toColumn) && to.getAttribute("data-piece") == "false") {
+					legal = 1;
+				}
+				let jump = 0; 
+				if ((toRow + toColumn) % 2 != 1) {
+					legal = 0;
+				}
 				if (from.children[0].getAttribute("class") == "white-piece" && 
-					color == "white" && 
-					myTurn == true) {
+					color == "white") {
 					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
 						legal = 0;
 					}
@@ -215,12 +219,14 @@
 							legal = 0;
 						}
 						else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
-							Messages.O_TAKE_PIECE.data = {
-								row: midRow,
-								column: midColumn
-							};
-							socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
-							jump = 1;
+							if (remove) {
+								Messages.O_TAKE_PIECE.data = {
+									row: midRow,
+									column: midColumn
+								};	
+								socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
+								jump = 1;
+							}
 						}
 						else {
 							legal = 0;
@@ -232,8 +238,7 @@
 					
 				}
 				else if (from.children[0].getAttribute("class") == "black-piece" &&
-					color == "black" && 
-					myTurn == true) {
+					color == "black") {
 					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
 						legal = 0;
 					}
@@ -251,12 +256,14 @@
 							legal = 0;
 						}				
 						else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
-							Messages.O_TAKE_PIECE.data = {
-								row: midRow,
-								column: midColumn
-							};
-							socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
-							jump = 1;
+							if (remove) {
+								Messages.O_TAKE_PIECE.data = {
+									row: midRow,
+									column: midColumn
+								};
+								socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
+								jump = 1;
+							}
 						}
 						else {
 							legal = 0;
@@ -269,6 +276,9 @@
 				else {
 					legal = 0;
 				}
+				if (!myTurn && remove) {
+					legal = 0;
+				}
 				return {
 					legal: legal,
 					isJump: jump
@@ -276,7 +286,41 @@
 			}
 
 			function isOnBoard(row, column) {
-				return row >= 1 && row <=8 && column >= 1 && column <= 8;
+				if (row >= 1 && row <=8 && column >= 1 && column <= 8) {
+					return true;
+				}
+				return false;
+			}
+
+			function canMove(cell) {
+				let row = parseInt(cell.getAttribute("data-row"));
+				let column = parseInt(cell.getAttribute("data-column"));
+				let move = 0;
+				if (isOnBoard(row+1, column+1) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row+1).toString()+'"][data-column="'+(column+1).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row+1, column-1) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row+1).toString()+'"][data-column="'+(column-1).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row-1, column+1) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row-1).toString()+'"][data-column="'+(column+1).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row-1, column-1) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row-1).toString()+'"][data-column="'+(column-1).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row+2, column+2) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row+2).toString()+'"][data-column="'+(column+2).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row+2, column-2) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row+2).toString()+'"][data-column="'+(column-2).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row-2, column+2) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row-2).toString()+'"][data-column="'+(column+2).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				if (isOnBoard(row-2, column-2) && isLegalMove(cell, document.querySelectorAll('[data-row="'+(row-2).toString()+'"][data-column="'+(column-2).toString()+'"]')[0], 0).legal) {
+					move = 1;
+				}
+				return move;
 			}
 
 			function forceJump(cell){
@@ -354,20 +398,6 @@
 					let cell = document.querySelectorAll('[data-row="'+message.data.row+'"][data-column="'+message.data.column+'"]')[0];
 					cell.innerHTML = "";
 					cell.setAttribute("data-piece", "false");
-					let hasLost = 1;
-					let count = 0;
-					Array.from(board.children).forEach(function(cell) {
-						if (cell.getAttribute("data-piece") == "true" && 
-						(cell.innerHTML == '<img class="' + color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">' )) {
-							hasLost = 0;
-							count++;
-						}
-					});
-					console.log(playerType + " " + hasLost + " " + count);
-					if (hasLost) {
-						Messages.O_GAME_WON_BY.data = playerType;
-						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
-					}
 				}
 				if (message.type == "MOVE-MADE") {
 					let from = document.querySelectorAll('[data-row="'+message.from.row+'"][data-column="'+message.from.column+'"]')[0];
@@ -386,6 +416,17 @@
 					}
 					else {
 						isJump = false;
+					}
+					let hasLost = 1;
+					Array.from(board.children).forEach(function(cells) {
+						if ((cells.innerHTML == '<img class="' + color + '-piece">'||cells.innerHTML == '<img class="' + color + '-king">')
+						&& canMove(cells)) {
+							hasLost = 0;
+						}
+					});
+					if (hasLost) {
+						Messages.O_GAME_WON_BY.data = playerType;
+						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
 					}
 				}
 			};
