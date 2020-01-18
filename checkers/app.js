@@ -104,9 +104,8 @@ wss.on("connection", function(ws) {
   con.id = connectionID++;
   let playerType = currentGame.addPlayer(con);
   websockets[con.id] = currentGame;
-  if (websockets[con.id].gameState == "2 joined") {
-    websockets[con.id].startGame();
-  }
+
+
   console.log("Game status: " + websockets[con.id].gameState);
 
   console.log(
@@ -119,6 +118,19 @@ wss.on("connection", function(ws) {
   
   con.send(playerType == "A" ? messages.S_PLAYER_A : messages.S_PLAYER_B);
 
+
+  if (websockets[con.id].gameState == "2 joined") {
+    websockets[con.id].startGame();
+    if (websockets[con.id].gameState == "a move") {
+        websockets[con.id].playerA.send(messages.S_START_TURN);
+    }
+    if (websockets[con.id].gameState == "b move") {
+        websockets[con.id].playerB.send(messages.S_START_TURN);
+    }
+    
+    currentGame = new Game(stats.ongoingGames++);
+  }
+
   con.on("message", function incoming(message) {
     console.log("[LOG] " + message);
     let oMsg = JSON.parse(message);
@@ -127,12 +139,43 @@ wss.on("connection", function(ws) {
     let isPlayerA = gameObj.playerA == con ? true : false;
 
     if (oMsg.type == "MOVE-MADE") {
-      if (isPlayerA) {
-        gameObj.playerB.send(message);
+      stats.movesMade++;
+      gameObj.playerB.send(message);
+      gameObj.playerA.send(message);
+    }
+
+    if (oMsg.type == "END-TURN") {
+      if (gameObj.gameState == "a move") {
+        gameObj.setStatus("b move");
+        gameObj.playerB.send(messages.S_START_TURN);
       }
       else {
-        gameObj.playerA.send(message);
+        gameObj.setStatus("a move");
+        gameObj.playerA.send(messages.S_START_TURN);
       }
+    }
+
+    if (oMsg.type == "TAKE-PIECE") {
+      gameObj.playerA.send(message);
+      gameObj.playerB.send(message);
+    }
+
+    if (oMsg.type == "GAME-WON-BY") {
+      if (oMsg.data == "B") {
+        gameObj.setStatus("a wins");
+        messages.O_GAME_OVER.data = "W";
+        gameObj.playerA.send(JSON.stringify(messages.O_GAME_OVER));
+        messages.O_GAME_OVER.data = "L";
+        gameObj.playerB.send(JSON.stringify(messages.O_GAME_OVER));
+      }
+      else {
+        gameObj.setStatus("b wins");
+        messages.O_GAME_OVER.data = "W";
+        gameObj.playerB.send(JSON.stringify(messages.O_GAME_OVER));
+        messages.O_GAME_OVER.data = "L";
+        gameObj.playerA.send(JSON.stringify(messages.O_GAME_OVER));
+      }
+      stats.gamesPlayed++;
     }
   });
 

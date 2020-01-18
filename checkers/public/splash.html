@@ -7,14 +7,14 @@
         </form>
         <p><span id="gamesPlayed">Unknown</span> Games Played!</p>
         <p><span id="movesMade">Unknown</span> Moves Made!!!</p>
-        <p><span id="playersOnline">Unknown</span> Players Online!</p>
+        <p><span id="playersOnline">Unknown</span> Players Ingame!</p>
     </body>
 
 
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
-        var socket = new WebSocket("ws://localhost:3001");
+        //var socket = new WebSocket("ws://localhost:3001");
         document.addEventListener("load", reload());
         function reload() {
             $.get("/updateStats/").done(function(res) {

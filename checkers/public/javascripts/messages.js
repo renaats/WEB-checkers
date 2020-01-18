@@ -17,7 +17,29 @@
             row: null,
             column: null
         }
-    }
+    };
+
+    exports.T_END_TURN = "END-TURN";
+    exports.O_END_TURN = {
+        type: exports.T_END_TURN
+    };
+    exports.S_END_TURN = JSON.stringify(exports.O_END_TURN);
+
+    exports.T_START_TURN = "START-TURN";
+    exports.O_START_TURN = {
+        type: exports.T_START_TURN
+    };
+    exports.S_START_TURN = JSON.stringify(exports.O_START_TURN);
+
+    exports.T_TAKE_PIECE = "TAKE-PIECE";
+    exports.O_TAKE_PIECE = {
+        type: exports.T_TAKE_PIECE,
+        data: {
+            row: null,
+            column: null
+        }
+    };
+
     /*
      * Client to server: game is complete, the winner is ...
      */
@@ -53,16 +75,6 @@
       data: "B"
     };
     exports.S_PLAYER_B = JSON.stringify(exports.O_PLAYER_B);
-  
-    /*
-     * Player B to server OR server to Player A: guessed character
-     */
-    exports.T_MAKE_A_MOVE = "MAKE-A-MOVE";
-    exports.O_MAKE_A_MOVE = {
-      type: exports.T_MAKE_A_MOVE,
-      data: null
-    };
-    //exports.S_MAKE_A_MOVE does not exist, as data needs to be set
   
     /*
      * Server to Player A & B: game over with result won/loss
