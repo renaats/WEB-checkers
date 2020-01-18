@@ -106,6 +106,12 @@ wss.on("connection", function(ws) {
   websockets[con.id] = currentGame;
   if (websockets[con.id].gameState == "2 joined") {
     websockets[con.id].startGame();
+    if (websockets[con.id].gameState == "a move") {
+        websockets[con.id].playerA.send(messages.S_START_TURN);
+    }
+    if (websockets[con.id].gameState == "b move") {
+        websockets[con.id].playerB.send(messages.S_START_TURN);
+    }
   }
   console.log("Game status: " + websockets[con.id].gameState);
 
@@ -127,11 +133,19 @@ wss.on("connection", function(ws) {
     let isPlayerA = gameObj.playerA == con ? true : false;
 
     if (oMsg.type == "MOVE-MADE") {
-      if (isPlayerA) {
-        gameObj.playerB.send(message);
+      gameObj.playerB.send(message);
+      gameObj.playerA.send(message);
+    }
+
+    if (oMsg.type == "END-TURN") {
+      console.log("end turn: " + gameObj.gameState);
+      if (gameObj.gameState == "a move") {
+        gameObj.setStatus("b move");
+        gameObj.playerB.send(messages.S_START_TURN);
       }
       else {
-        gameObj.playerA.send(message);
+        gameObj.setStatus("a move");
+        gameObj.playerA.send(messages.S_START_TURN);
       }
     }
   });

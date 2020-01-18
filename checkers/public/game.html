@@ -153,7 +153,12 @@
 		<script src="/javascripts/messages.js"></script>
 		<script>
 			let board = document.getElementsByClassName("board")[0];
+			let color = null;
+			let playerType = null;
+			let gameState = null;
 			let from = null;
+			let myTurn = null;
+			let isJump = false;
 			let haveToJump = false;
 			Array.from(board.children).forEach(function(cell) {
 				cell.onclick = function(elem) {
@@ -163,11 +168,7 @@
 					}
 					else {
 						let move = isLegalMove(from, elem.target);
-						if (from && move.legal && (!haveToJump ||move.isJump)) {
-							elem.target.innerHTML = from.innerHTML;
-							from.innerHTML = "";
-							elem.target.setAttribute("data-piece", "true");
-							from.setAttribute("data-piece", "false");
+						if (from && move.legal && (!haveToJump || move.isJump)) {
 							Messages.O_MOVE_MADE.from = {
 								row: from.getAttribute("data-row"),
 								column: from.getAttribute("data-column")
@@ -176,6 +177,8 @@
 								row: elem.target.getAttribute("data-row"),
 								column: elem.target.getAttribute("data-column")
 							};
+							isJump = move.isJump;
+							haveToJump = false;
 							socket.send(JSON.stringify(Messages.O_MOVE_MADE));
 							from = null;
 						}
@@ -193,8 +196,8 @@
 				let jump = 0;
 				legal = legal && (toRow + toColumn) % 2 === 1;
 				if (from.children[0].getAttribute("class") == "white-piece" && 
-					document.getElementById("color").innerHTML == "white" && 
-					document.getElementById("game-state").innerHTML == "a move") {
+					color == "white" && 
+					myTurn == true) {
 					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
 						legal = 0;
 					}
@@ -226,8 +229,8 @@
 					
 				}
 				else if (from.children[0].getAttribute("class") == "black-piece" &&
-					document.getElementById("color").innerHTML == "black" && 
-					document.getElementById("game-state").innerHTML == "b move") {
+					color == "black" && 
+					myTurn == true) {
 					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
 						legal = 0;
 					}
@@ -243,7 +246,7 @@
 						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 						if (cell.getAttribute("data-piece") === "false") {
 							legal = 0;
-						}
+						}				
 						else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
 							cell.innerHTML = "";
 							cell.setAttribute("data-piece", "false");
@@ -262,8 +265,51 @@
 				}
 				return {
 					legal: legal,
-					jump: jump
+					isJump: jump
 				};
+			}
+
+			function isOnBoard(row, column) {
+				return row >= 1 && row <=8 && column >= 1 && column <= 8;
+			}
+
+			function forceJump(cell){
+				if (cell.innerHTML == '<img class="' + color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">') {
+					let row = parseInt(cell.getAttribute("data-row"));
+					let column = parseInt(cell.getAttribute("data-column"));
+					if (isOnBoard(row + 2, column + 2)) {
+						let target = document.querySelectorAll('[data-row="'+(row+2).toString()+'"][data-column="'+(column+2).toString()+'"]')[0];
+						let over = document.querySelectorAll('[data-row="'+(row+1).toString()+'"][data-column="'+(column+1).toString()+'"]')[0];
+						if (target.getAttribute("data-piece") == "false" && over.getAttribute("data-piece") == "true" &&
+						over.innerHTML != '<img class="' + color + '-piece">' && over.innerHTML != '<img class="' + color + '-king">' ) {
+							haveToJump = true;
+						}
+					}
+					if (isOnBoard(row + 2, column - 2)) {
+						let target = document.querySelectorAll('[data-row="'+(row+2).toString()+'"][data-column="'+(column-2).toString()+'"]')[0];
+						let over = document.querySelectorAll('[data-row="'+(row+1).toString()+'"][data-column="'+(column-1).toString()+'"]')[0];
+						if (target.getAttribute("data-piece") == "false" && over.getAttribute("data-piece") == "true" &&
+						over.innerHTML != '<img class="' + color + '-piece">' && over.innerHTML != '<img class="' + color + '-king">' ) {
+							haveToJump = true;
+						}
+					}
+					if (isOnBoard(row - 2, column + 2)) {
+						let target = document.querySelectorAll('[data-row="'+(row-2).toString()+'"][data-column="'+(column+2).toString()+'"]')[0];
+						let over = document.querySelectorAll('[data-row="'+(row-1).toString()+'"][data-column="'+(column+1).toString()+'"]')[0];
+						if (target.getAttribute("data-piece") == "false" && over.getAttribute("data-piece") == "true" &&
+						over.innerHTML != '<img class="' + color + '-piece">' && over.innerHTML != '<img class="' + color + '-king">' ) {
+							haveToJump = true;
+						}
+					}
+					if (isOnBoard(row - 2, column - 2)) {
+						let target = document.querySelectorAll('[data-row="'+(row-2).toString()+'"][data-column="'+(column-2).toString()+'"]')[0];
+						let over = document.querySelectorAll('[data-row="'+(row-1).toString()+'"][data-column="'+(column-1).toString()+'"]')[0];
+						if (target.getAttribute("data-piece") == "false" && over.getAttribute("data-piece") == "true" &&
+						over.innerHTML != '<img class="' + color + '-piece">' && over.innerHTML != '<img class="' + color + '-king">' ) {
+							haveToJump = true;
+						}
+					}
+				}
 			}
 
 			var socket = new WebSocket("ws://localhost:3001");
@@ -276,16 +322,26 @@
 				message = JSON.parse(event.data);
 				console.log(document.getElementById("player-type").innerHTML + ": " + event.data);
 				if (message.type == "PLAYER-TYPE") {
-					document.getElementById("player-type").innerHTML = message.data;
+					playerType = message.data;
+					document.getElementById("player-type").innerHTML = playerType;
 					if (message.data == "A") {
-						document.getElementById("color").innerHTML = "white";
+						color = "white";
 					}
 					else {
-						document.getElementById("color").innerHTML = "black";
+						color = "black";
 					}
+					document.getElementById("color").innerHTML = color;
 				}
 				if (message.type == "GAME-STATE") {
-					document.getElementById("game-state").innerHTML = message.data;
+					gameState = message.data;
+					document.getElementById("game-state").innerHTML = gameState;
+				}
+				if (message.type == "START-TURN") {
+					myTurn = true;
+					Array.from(board.children).forEach(function(cell) {
+						forceJump(cell);
+					});
+					console.log(playerType + " turn started, forceJump: " + haveToJump);
 				}
 				if (message.type == "MOVE-MADE") {
 					let from = document.querySelectorAll('[data-row="'+message.from.row+'"][data-column="'+message.from.column+'"]')[0];
@@ -294,6 +350,17 @@
 					from.innerHTML = "";
 					to.setAttribute("data-piece", "true");
 					from.setAttribute("data-piece", "false");
+
+					if (myTurn == true) {
+						forceJump(to);
+						if (!haveToJump || !isJump) {
+							socket.send(Messages.S_END_TURN);
+							myTurn = false;
+						}	
+					}
+					else {
+						isJump = false;
+					}
 				}
 			};
 		</script>
