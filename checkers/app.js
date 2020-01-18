@@ -104,15 +104,8 @@ wss.on("connection", function(ws) {
   con.id = connectionID++;
   let playerType = currentGame.addPlayer(con);
   websockets[con.id] = currentGame;
-  if (websockets[con.id].gameState == "2 joined") {
-    websockets[con.id].startGame();
-    if (websockets[con.id].gameState == "a move") {
-        websockets[con.id].playerA.send(messages.S_START_TURN);
-    }
-    if (websockets[con.id].gameState == "b move") {
-        websockets[con.id].playerB.send(messages.S_START_TURN);
-    }
-  }
+
+
   console.log("Game status: " + websockets[con.id].gameState);
 
   console.log(
@@ -125,6 +118,19 @@ wss.on("connection", function(ws) {
   
   con.send(playerType == "A" ? messages.S_PLAYER_A : messages.S_PLAYER_B);
 
+
+  if (websockets[con.id].gameState == "2 joined") {
+    websockets[con.id].startGame();
+    if (websockets[con.id].gameState == "a move") {
+        websockets[con.id].playerA.send(messages.S_START_TURN);
+    }
+    if (websockets[con.id].gameState == "b move") {
+        websockets[con.id].playerB.send(messages.S_START_TURN);
+    }
+    
+    currentGame = new Game(stats.ongoingGames++);
+  }
+
   con.on("message", function incoming(message) {
     console.log("[LOG] " + message);
     let oMsg = JSON.parse(message);
@@ -133,6 +139,7 @@ wss.on("connection", function(ws) {
     let isPlayerA = gameObj.playerA == con ? true : false;
 
     if (oMsg.type == "MOVE-MADE") {
+      stats.movesMade++;
       gameObj.playerB.send(message);
       gameObj.playerA.send(message);
     }
