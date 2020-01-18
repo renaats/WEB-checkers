@@ -42,7 +42,7 @@
 				background-image: url("images/dark wood.jpg");
 			}
 
-			.chat {
+			#chat {
 				height: 500px;
 				border: 5px solid gray;
 			}
@@ -135,12 +135,12 @@
 
 		</div>
 		<div style="float: right" width=auto>
-			<div class="chat" style="height: 500px"></div>
+			<div id="chat" style="height: 500px"></div>
 
 			<br>
-			<form>
+			<form id="submit-text">
 				Please input your message:  
-				<input type="text" name="firstname"> <input type="submit" value="Send">
+				<input id="message-text" type="text"> <input type="submit" value="Send">
 			</form>
 		</div>
 		<main>
@@ -464,8 +464,22 @@
 				}
 			}
 
+			
+
 			var socket = new WebSocket("ws://localhost:3001");
 			var message;
+
+			
+			let element = document.getElementById("submit-text");
+			element.addEventListener("submit", function(event) {
+				let messageText = document.getElementById("message-text").value;
+				event.preventDefault();
+				console.log(event);
+				console.log(messageText);
+				Messages.O_MESSAGE.data = color.charAt(0).toUpperCase() + color.slice(1) + ": " + messageText;
+				document.getElementById("message-text").value = "";
+				socket.send(JSON.stringify(Messages.O_MESSAGE));
+			});
 
 			socket.onopen = function(){
 
@@ -538,6 +552,11 @@
 						Messages.O_GAME_WON_BY.data = playerType;
 						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
 					}
+				}
+				if (message.type == "MESSAGE") {
+					let chat = document.getElementById("chat");
+					chat.innerHTML += message.data + "<br>";
+					console.log(chat.innerHTML);
 				}
 			};
 		</script>

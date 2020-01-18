@@ -84,5 +84,12 @@
       type: exports.T_GAME_OVER,
       data: null
     };
+
+    exports.T_MESSAGE = "MESSAGE";
+    exports.O_MESSAGE = {
+        type: exports.T_MESSAGE,
+        data: null
+    }
+
   })(typeof exports === "undefined" ? (this.Messages = {}) : exports);
   //if exports is undefined, we are on the client; else the server
