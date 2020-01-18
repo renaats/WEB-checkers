@@ -138,7 +138,6 @@ wss.on("connection", function(ws) {
     }
 
     if (oMsg.type == "END-TURN") {
-      console.log("end turn: " + gameObj.gameState);
       if (gameObj.gameState == "a move") {
         gameObj.setStatus("b move");
         gameObj.playerB.send(messages.S_START_TURN);
@@ -147,6 +146,11 @@ wss.on("connection", function(ws) {
         gameObj.setStatus("a move");
         gameObj.playerA.send(messages.S_START_TURN);
       }
+    }
+
+    if (oMsg.type == "TAKE-PIECE") {
+      gameObj.playerA.send(message);
+      gameObj.playerB.send(message);
     }
   });
 

@@ -31,6 +31,15 @@
     };
     exports.S_START_TURN = JSON.stringify(exports.O_START_TURN);
 
+    exports.T_TAKE_PIECE = "TAKE-PIECE";
+    exports.O_TAKE_PIECE = {
+        type: exports.T_TAKE_PIECE,
+        data: {
+            row: null,
+            column: null
+        }
+    };
+
     /*
      * Client to server: game is complete, the winner is ...
      */

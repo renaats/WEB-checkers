@@ -215,8 +215,11 @@
 							legal = 0;
 						}
 						else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
-							cell.innerHTML = "";
-							cell.setAttribute("data-piece", "false");
+							Messages.O_TAKE_PIECE.data = {
+								row: midRow,
+								column: midColumn
+							};
+							socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
 							jump = 1;
 						}
 						else {
@@ -248,8 +251,11 @@
 							legal = 0;
 						}				
 						else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
-							cell.innerHTML = "";
-							cell.setAttribute("data-piece", "false");
+							Messages.O_TAKE_PIECE.data = {
+								row: midRow,
+								column: midColumn
+							};
+							socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
 							jump = 1;
 						}
 						else {
@@ -337,11 +343,17 @@
 					document.getElementById("game-state").innerHTML = gameState;
 				}
 				if (message.type == "START-TURN") {
+					haveToJump = false;
 					myTurn = true;
 					Array.from(board.children).forEach(function(cell) {
 						forceJump(cell);
 					});
 					console.log(playerType + " turn started, forceJump: " + haveToJump);
+				}
+				if (message.type == "TAKE-PIECE") {
+					let cell = document.querySelectorAll('[data-row="'+message.data.row+'"][data-column="'+message.data.column+'"]')[0];
+					cell.innerHTML = "";
+					cell.setAttribute("data-piece", "false");
 				}
 				if (message.type == "MOVE-MADE") {
 					let from = document.querySelectorAll('[data-row="'+message.from.row+'"][data-column="'+message.from.column+'"]')[0];
