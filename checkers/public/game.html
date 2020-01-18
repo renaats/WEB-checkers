@@ -5,7 +5,7 @@
 			.white-piece, .black-piece, .white-king, .black-king {
 				pointer-events: none;
 				height: 60px;
-				width: auto; 
+				width: 60px; 
 				display: block;
 				margin-left: auto;
 				margin-right: auto;	
@@ -13,16 +13,16 @@
 				margin-bottom: auto;
 			}
 			.white-piece {
-				content: url(images/White.png);
+				content: url("images/White.png");
 			}
 			.black-piece {
-				content: url(images/Black.png);
+				content: url("images/Black.png");
 			}
 			.white-king {
-				content: url(images/White-king.png);
+				content: url("images/White-king.png");
 			}
 			.black-king {
-				content: url(images/Black-king.png);
+				content: url("images/Black-king.png");
 			}
 
 			.board {
@@ -161,21 +161,24 @@
 						from = elem.target;
 						console.log(from);
 					}
-					else if (from && isLegalMove(from, elem.target)) {
-						elem.target.innerHTML = from.innerHTML;
-						from.innerHTML = "";
-						elem.target.setAttribute("data-piece", "true");
-						from.setAttribute("data-piece", "false");
-						Messages.O_MOVE_MADE.from = {
-							row: from.getAttribute("data-row"),
-							column: from.getAttribute("data-column")
-						};
-						Messages.O_MOVE_MADE.to = {
-							row: elem.target.getAttribute("data-row"),
-							column: elem.target.getAttribute("data-column")
-						};
-						socket.send(JSON.stringify(Messages.O_MOVE_MADE));
-						from = null;
+					else {
+						let move = isLegalMove(from, elem.target);
+						if (from && move.legal && (!haveToJump ||move.isJump)) {
+							elem.target.innerHTML = from.innerHTML;
+							from.innerHTML = "";
+							elem.target.setAttribute("data-piece", "true");
+							from.setAttribute("data-piece", "false");
+							Messages.O_MOVE_MADE.from = {
+								row: from.getAttribute("data-row"),
+								column: from.getAttribute("data-column")
+							};
+							Messages.O_MOVE_MADE.to = {
+								row: elem.target.getAttribute("data-row"),
+								column: elem.target.getAttribute("data-column")
+							};
+							socket.send(JSON.stringify(Messages.O_MOVE_MADE));
+							from = null;
+						}
 					}
 				}
 			});
@@ -187,6 +190,7 @@
 				let fromColumn = parseInt(from.getAttribute("data-column"));
 				
 				let legal = 1;
+				let jump = 0;
 				legal = legal && (toRow + toColumn) % 2 === 1;
 				if (from.children[0].getAttribute("class") == "white-piece" && 
 					document.getElementById("color").innerHTML == "white" && 
@@ -210,6 +214,7 @@
 						else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
 							cell.innerHTML = "";
 							cell.setAttribute("data-piece", "false");
+							jump = 1;
 						}
 						else {
 							legal = 0;
@@ -242,6 +247,7 @@
 						else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
 							cell.innerHTML = "";
 							cell.setAttribute("data-piece", "false");
+							jump = 1;
 						}
 						else {
 							legal = 0;
@@ -254,8 +260,12 @@
 				else {
 					legal = 0;
 				}
-				return legal;
+				return {
+					legal: legal,
+					jump: jump
+				};
 			}
+
 			var socket = new WebSocket("ws://localhost:3001");
 			var message;
 
