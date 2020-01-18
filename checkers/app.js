@@ -126,11 +126,13 @@ wss.on("connection", function(ws) {
     let gameObj = websockets[con.id];
     let isPlayerA = gameObj.playerA == con ? true : false;
 
-    if (isPlayerA) {
-      
-    }
-    else {
-      console.log("Message from player B: " + message);
+    if (oMsg.type == "MOVE-MADE") {
+      if (isPlayerA) {
+        gameObj.playerB.send(message);
+      }
+      else {
+        gameObj.playerA.send(message);
+      }
     }
   });
 

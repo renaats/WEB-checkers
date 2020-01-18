@@ -4,7 +4,8 @@
 		<style>
 			.white-piece, .black-piece, .white-king, .black-king {
 				pointer-events: none;
-				height: 60px; 
+				height: 60px;
+				width: auto; 
 				display: block;
 				margin-left: auto;
 				margin-right: auto;	
@@ -259,11 +260,11 @@
 			var message;
 
 			socket.onopen = function(){
-				socket.send(JSON.stringify(document.getElementById("hello")));
+
 			};
 			socket.onmessage = function(event){
-				//console.log(message);
 				message = JSON.parse(event.data);
+				console.log(document.getElementById("player-type").innerHTML + ": " + event.data);
 				if (message.type == "PLAYER-TYPE") {
 					document.getElementById("player-type").innerHTML = message.data;
 					if (message.data == "A") {
@@ -277,12 +278,12 @@
 					document.getElementById("game-state").innerHTML = message.data;
 				}
 				if (message.type == "MOVE-MADE") {
-					message.to.innerHTML = message.from.innerHTML;
-					message.from.innerHTML = "";
-					message.to.setAttribute("data-piece", "true");
-					message.from.setAttribute("data-piece", "false");
-					message.from = null;
-					message.to = null;
+					let from = document.querySelectorAll('[data-row="'+message.from.row+'"][data-column="'+message.from.column+'"]')[0];
+					let to = document.querySelectorAll('[data-row="'+message.to.row+'"][data-column="'+message.to.column+'"]')[0];
+					to.innerHTML = from.innerHTML;
+					from.innerHTML = "";
+					to.setAttribute("data-piece", "true");
+					from.setAttribute("data-piece", "false");
 				}
 			};
 		</script>
