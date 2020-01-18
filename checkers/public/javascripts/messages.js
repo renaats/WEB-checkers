@@ -1,4 +1,23 @@
 (function(exports) {
+
+    exports.T_GAME_STATE = "GAME-STATE";
+    exports.O_GAME_STATE = {
+        type: exports.T_GAME_STATE,
+        data: null
+    };
+
+    exports.T_MOVE_MADE = "MOVE-MADE";
+    exports.O_MOVE_MADE = {
+        type: exports.T_MOVE_MADE,
+        from: {
+            row: null,
+            column: null
+        },
+        to: {
+            row: null,
+            column: null
+        }
+    }
     /*
      * Client to server: game is complete, the winner is ...
      */

@@ -134,7 +134,13 @@ game.prototype.addPlayer = function(p) {
 };
 
 game.prototype.startGame = function() {
-    this.setStatus("a move");
+    let first = Math.floor(Math.random() * 2);
+    if (first == 0) {
+      this.setStatus("a move");
+    }
+    else {
+      this.setStatus("b move");
+    }
 }
 
 module.exports = game;

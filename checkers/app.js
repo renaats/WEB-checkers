@@ -32,6 +32,8 @@ setInterval(function() {
   }
 }, 50000);
 
+
+
 var currentGame = new Game(stats.ongoingGames++);
 var connectionID = 0;
 
@@ -85,13 +87,27 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+function noop() {}
+
+function heartbeat() {
+  this.isAlive = true;
+}
+
 wss.on("connection", function(ws) {
+  ws.isAlive = true;
+  ws.on('pong', heartbeat);
+
   console.log("connected");
   stats.playersOnline++;
   let con = ws;
   con.id = connectionID++;
   let playerType = currentGame.addPlayer(con);
   websockets[con.id] = currentGame;
+  if (websockets[con.id].gameState == "2 joined") {
+    websockets[con.id].startGame();
+  }
+  console.log("Game status: " + websockets[con.id].gameState);
 
   console.log(
     "Player %s placed in game %s as %s",
@@ -100,71 +116,88 @@ wss.on("connection", function(ws) {
     playerType 
   );
 
+  
   con.send(playerType == "A" ? messages.S_PLAYER_A : messages.S_PLAYER_B);
 
   con.on("message", function incoming(message) {
-      console.log("[LOG] " + message);
-      let oMsg = JSON.parse(message);
+    console.log("[LOG] " + message);
+    let oMsg = JSON.parse(message);
 
-      let gameObj = websockets[con.id];
-      let isPlayerA = gameObj.playerA == con ? true : false;
+    let gameObj = websockets[con.id];
+    let isPlayerA = gameObj.playerA == con ? true : false;
 
-      if (isPlayerA) {
-        console.log("Message from player A: " + message);
-      }
-      else {
-        console.log("Message from player B: " + message);
-      }
+    if (isPlayerA) {
+      
+    }
+    else {
+      console.log("Message from player B: " + message);
+    }
   });
+
   con.on("close", function(code) {
     console.log("disconnected");
     stats.playersOnline--;
     console.log(con.id + " disconnected ...");
-    if (code == "1001") {
-         let gameObj = websockets[con.id];
+    //if (code == "1001") {
+      let gameObj = websockets[con.id];
 
-        if (gameObj.isValidTransition(gameObj.gameState, "aborted")) {
-          gameObj.setStatus("aborted");
+      if (gameObj.isValidTransition(gameObj.gameState, "aborted")) {
+        gameObj.setStatus("aborted");
 
-          try {
-            gameObj.playerA.close();
-            gameObj.playerA = null;
-          } catch (e) {
-            console.log("Player A closing: " + e);
-          }
-
-          try {
-            gameObj.playerB.close();
-            gameObj.playerB = null;
-          } catch (e) {
-            console.log("Player B closing: " + e);
-          }
+        try {
+          gameObj.playerA.close();
+          gameObj.playerA = null;
+        } catch (e) {
+          console.log("Player A closing: " + e);
         }
-        else if (gameObj.gameState === "2 joined") {
-          gameObj.setStatus("1 joined");
-          if (gameObj.playerA === con) {
-            gameObj.playerA = null;
-          } else {
-            gameObj.playerB = null;
-          }
 
-          try {
-            gameObj.playerB = null;
-          } catch (e) {
-            console.log("Player B closing: " + e);
-          }
-        }
-        else if (gameObj.gameState === "1 joined") {
-          gameObj.setStatus("0 joined");
-          if (gameObj.playerA === con) {
-            gameObj.playerA = null;
-          } else {
-            gameObj.playerB = null;
-          }
+        try {
+          gameObj.playerB.close();
+          gameObj.playerB = null;
+        } catch (e) {
+          console.log("Player B closing: " + e);
         }
       }
+      else if (gameObj.gameState === "2 joined") {
+        gameObj.setStatus("1 joined");
+        if (gameObj.playerA === con) {
+          gameObj.playerA = null;
+        } else {
+          gameObj.playerB = null;
+        }
+
+        try {
+          gameObj.playerB = null;
+        } catch (e) {
+          console.log("Player B closing: " + e);
+        }
+      }
+      else if (gameObj.gameState === "1 joined") {
+        gameObj.setStatus("0 joined");
+        if (gameObj.playerA === con) {
+          gameObj.playerA = null;
+        } else {
+          gameObj.playerB = null;
+        }
+      }
+    //}
+    con.terminate();
   });
 });
+
+
+
+const interval = setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) return ws.terminate();
+
+    ws.isAlive = false;
+    ws.ping(noop);
+    messages.O_GAME_STATE.data = websockets[ws.id].gameState;
+    ws.send(JSON.stringify(messages.O_GAME_STATE));
+    //console.log("Game state sent!");
+  });
+}, 1000);
 
 module.exports = app;
 

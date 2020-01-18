@@ -132,99 +132,6 @@
 				<div class="white"></div>
 			</div>
 
-			
-			
-			<script>
-				let board = document.getElementsByClassName("board")[0];
-				let from = null;
-				let haveToJump = false;
-				console.log(from);
-				Array.from(board.children).forEach(function(cell) {
-					cell.onclick = function(elem) {
-						if (elem.target.getAttribute("data-piece") === "true") {
-							from = elem.target;
-							console.log(from);
-						}
-						else if (from && isLegalMove(from, elem.target)) {
-							elem.target.innerHTML = from.innerHTML;
-							from.innerHTML = "";
-							elem.target.setAttribute("data-piece", "true");
-							from.setAttribute("data-piece", "false");
-							from = null;
-						}
-					}
-				});
-
-				function isLegalMove(from, to) {
-					let toRow = parseInt(to.getAttribute("data-row"));
-					let toColumn = parseInt(to.getAttribute("data-column"));
-					let fromRow = parseInt(from.getAttribute("data-row"));
-					let fromColumn = parseInt(from.getAttribute("data-column"));
-					
-					let legal = 1;
-					legal = legal && (toRow + toColumn) % 2 === 1;
-					if (from.children[0].getAttribute("class") === "white-piece") {
-						if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
-							legal = 0;
-						}
-						else if (Math.abs(fromRow - toRow) > 2) {
-							legal = 0;
-						}
-						else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
-							legal = 0;
-						}
-						else if (Math.abs(fromRow - toRow) == 2) {
-							let midRow = ((fromRow + toRow) / 2).toString();
-							let midColumn = ((fromColumn + toColumn) / 2).toString();
-							let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
-							if (cell.getAttribute("data-piece") === "false") {
-								legal = 0;
-							}
-							else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
-								cell.innerHTML = "";
-								cell.setAttribute("data-piece", "false");
-							}
-							else {
-								legal = 0;
-							}
-						}
-						else if (toRow >= fromRow) {
-							legal = 0;
-						}
-						
-					}
-					if (from.children[0].getAttribute("class") === "black-piece") {
-						if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
-							legal = 0;
-						}
-						else if (Math.abs(fromRow - toRow) > 2) {
-							legal = 0;
-						}
-						else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
-							legal = 0;
-						}
-						else if (Math.abs(fromRow - toRow) == 2) {
-							let midRow = ((fromRow + toRow) / 2).toString();
-							let midColumn = ((fromColumn + toColumn) / 2).toString();
-							let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
-							if (cell.getAttribute("data-piece") === "false") {
-								legal = 0;
-							}
-							else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
-								cell.innerHTML = "";
-								cell.setAttribute("data-piece", "false");
-							}
-							else {
-								legal = 0;
-							}
-						}
-						else if (toRow <= fromRow) {
-							legal = 0;
-						}
-					}
-					return legal;
-				}
-			</script>
 		</div>
 		<div style="float: right" width=auto>
 			<div class="chat" style="height: 500px"></div>
@@ -236,22 +143,148 @@
 			</form>
 		</div>
 		<main>
-            Status: <span id="hello"></span>
-        </main>
+			The game state is: <span id="game-state"></span><br>
+			You are player <span id="player-type"></span><br>
+			Your color is <span id="color"></span>
+		</main>
+		
 
-        <!-- Poor coding standard, only for demonstration purposes.
-             JavaScript code should not be part of HTML documents.
-        -->
-        <script>
-            var socket = new WebSocket("ws://localhost:3001");
+		<script src="/javascripts/messages.js"></script>
+		<script>
+			let board = document.getElementsByClassName("board")[0];
+			let from = null;
+			let haveToJump = false;
+			Array.from(board.children).forEach(function(cell) {
+				cell.onclick = function(elem) {
+					if (elem.target.getAttribute("data-piece") === "true") {
+						from = elem.target;
+						console.log(from);
+					}
+					else if (from && isLegalMove(from, elem.target)) {
+						elem.target.innerHTML = from.innerHTML;
+						from.innerHTML = "";
+						elem.target.setAttribute("data-piece", "true");
+						from.setAttribute("data-piece", "false");
+						Messages.O_MOVE_MADE.from = {
+							row: from.getAttribute("data-row"),
+							column: from.getAttribute("data-column")
+						};
+						Messages.O_MOVE_MADE.to = {
+							row: elem.target.getAttribute("data-row"),
+							column: elem.target.getAttribute("data-column")
+						};
+						socket.send(JSON.stringify(Messages.O_MOVE_MADE));
+						from = null;
+					}
+				}
+			});
 
-            socket.onopen = function(){
-                socket.send(JSON.stringify(document.getElementById("hello")));
-            };
-            socket.onmessage = function(event){
-                document.getElementById("hello").innerHTML = event.data;
-            };
+			function isLegalMove(from, to) {
+				let toRow = parseInt(to.getAttribute("data-row"));
+				let toColumn = parseInt(to.getAttribute("data-column"));
+				let fromRow = parseInt(from.getAttribute("data-row"));
+				let fromColumn = parseInt(from.getAttribute("data-column"));
+				
+				let legal = 1;
+				legal = legal && (toRow + toColumn) % 2 === 1;
+				if (from.children[0].getAttribute("class") == "white-piece" && 
+					document.getElementById("color").innerHTML == "white" && 
+					document.getElementById("game-state").innerHTML == "a move") {
+					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
+						legal = 0;
+					}
+					else if (Math.abs(fromRow - toRow) > 2) {
+						legal = 0;
+					}
+					else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
+						legal = 0;
+					}
+					else if (Math.abs(fromRow - toRow) == 2) {
+						let midRow = ((fromRow + toRow) / 2).toString();
+						let midColumn = ((fromColumn + toColumn) / 2).toString();
+						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+						if (cell.getAttribute("data-piece") === "false") {
+							legal = 0;
+						}
+						else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
+							cell.innerHTML = "";
+							cell.setAttribute("data-piece", "false");
+						}
+						else {
+							legal = 0;
+						}
+					}
+					else if (toRow >= fromRow) {
+						legal = 0;
+					}
+					
+				}
+				else if (from.children[0].getAttribute("class") == "black-piece" &&
+					document.getElementById("color").innerHTML == "black" && 
+					document.getElementById("game-state").innerHTML == "b move") {
+					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
+						legal = 0;
+					}
+					else if (Math.abs(fromRow - toRow) > 2) {
+						legal = 0;
+					}
+					else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
+						legal = 0;
+					}
+					else if (Math.abs(fromRow - toRow) == 2) {
+						let midRow = ((fromRow + toRow) / 2).toString();
+						let midColumn = ((fromColumn + toColumn) / 2).toString();
+						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+						if (cell.getAttribute("data-piece") === "false") {
+							legal = 0;
+						}
+						else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
+							cell.innerHTML = "";
+							cell.setAttribute("data-piece", "false");
+						}
+						else {
+							legal = 0;
+						}
+					}
+					else if (toRow <= fromRow) {
+						legal = 0;
+					}
+				}
+				else {
+					legal = 0;
+				}
+				return legal;
+			}
+			var socket = new WebSocket("ws://localhost:3001");
+			var message;
 
-        </script>
+			socket.onopen = function(){
+				socket.send(JSON.stringify(document.getElementById("hello")));
+			};
+			socket.onmessage = function(event){
+				//console.log(message);
+				message = JSON.parse(event.data);
+				if (message.type == "PLAYER-TYPE") {
+					document.getElementById("player-type").innerHTML = message.data;
+					if (message.data == "A") {
+						document.getElementById("color").innerHTML = "white";
+					}
+					else {
+						document.getElementById("color").innerHTML = "black";
+					}
+				}
+				if (message.type == "GAME-STATE") {
+					document.getElementById("game-state").innerHTML = message.data;
+				}
+				if (message.type == "MOVE-MADE") {
+					message.to.innerHTML = message.from.innerHTML;
+					message.from.innerHTML = "";
+					message.to.setAttribute("data-piece", "true");
+					message.from.setAttribute("data-piece", "false");
+					message.from = null;
+					message.to = null;
+				}
+			};
+		</script>
 	</body>
 </html>
