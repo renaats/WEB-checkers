@@ -5,7 +5,7 @@
 			.white-piece, .black-piece, .white-king, .black-king {
 				pointer-events: none;
 				height: 60px;
-				width: 60px; 
+				width: auto; 
 				display: block;
 				margin-left: auto;
 				margin-right: auto;	
@@ -354,6 +354,20 @@
 					let cell = document.querySelectorAll('[data-row="'+message.data.row+'"][data-column="'+message.data.column+'"]')[0];
 					cell.innerHTML = "";
 					cell.setAttribute("data-piece", "false");
+					let hasLost = 1;
+					let count = 0;
+					Array.from(board.children).forEach(function(cell) {
+						if (cell.getAttribute("data-piece") == "true" && 
+						(cell.innerHTML == '<img class="' + color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">' )) {
+							hasLost = 0;
+							count++;
+						}
+					});
+					console.log(playerType + " " + hasLost + " " + count);
+					if (hasLost) {
+						Messages.O_GAME_WON_BY.data = playerType;
+						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
+					}
 				}
 				if (message.type == "MOVE-MADE") {
 					let from = document.querySelectorAll('[data-row="'+message.from.row+'"][data-column="'+message.from.column+'"]')[0];

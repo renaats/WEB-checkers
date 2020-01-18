@@ -159,6 +159,24 @@ wss.on("connection", function(ws) {
       gameObj.playerA.send(message);
       gameObj.playerB.send(message);
     }
+
+    if (oMsg.type == "GAME-WON-BY") {
+      if (oMsg.data == "B") {
+        gameObj.setStatus("a wins");
+        messages.O_GAME_OVER.data = "W";
+        gameObj.playerA.send(JSON.stringify(messages.O_GAME_OVER));
+        messages.O_GAME_OVER.data = "L";
+        gameObj.playerB.send(JSON.stringify(messages.O_GAME_OVER));
+      }
+      else {
+        gameObj.setStatus("b wins");
+        messages.O_GAME_OVER.data = "W";
+        gameObj.playerB.send(JSON.stringify(messages.O_GAME_OVER));
+        messages.O_GAME_OVER.data = "L";
+        gameObj.playerA.send(JSON.stringify(messages.O_GAME_OVER));
+      }
+      stats.gamesPlayed++;
+    }
   });
 
   con.on("close", function(code) {

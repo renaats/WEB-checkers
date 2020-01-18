@@ -77,16 +77,6 @@
     exports.S_PLAYER_B = JSON.stringify(exports.O_PLAYER_B);
   
     /*
-     * Player B to server OR server to Player A: guessed character
-     */
-    exports.T_MAKE_A_MOVE = "MAKE-A-MOVE";
-    exports.O_MAKE_A_MOVE = {
-      type: exports.T_MAKE_A_MOVE,
-      data: null
-    };
-    //exports.S_MAKE_A_MOVE does not exist, as data needs to be set
-  
-    /*
      * Server to Player A & B: game over with result won/loss
      */
     exports.T_GAME_OVER = "GAME-OVER";
