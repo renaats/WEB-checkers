@@ -168,6 +168,9 @@
 					}
 					else {
 						let move = isLegalMove(from, elem.target, 1);
+						console.log(from);
+						console.log(move);
+						console.log(haveToJump);
 						if (from && move.legal && (!haveToJump || move.isJump)) {
 							Messages.O_MOVE_MADE.from = {
 								row: from.getAttribute("data-row"),
@@ -278,107 +281,148 @@
 					color == "black") {
 					let csign = 1;
 					let rsign = 1;
-					if(fromRow > toRow)
-					{rsign=-1;}
-					if(fromColumn>toColumn)
-					{csign=-1;}
+					if(fromRow > toRow) {
+						rsign=-1;
+					}
+					if(fromColumn>toColumn) {
+						csign=-1;
+					}
 					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
 						legal = 0;
 					}
-					else if (Math.abs(fromRow - toRow) > 2) {
+					else if (Math.abs(fromRow - toRow) >= 2) {
 						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
 						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0]; //unimportant
-						for(var rr = fromRow+rsign, cc = fromColumn+csign; rr != toRow, cc != toColumn; rr+=rsign, cc+=csign)
-						{
-							midRow=rr.toString();
-							midColumn=cc.toString();
-							cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+						let rr = fromRow + rsign;
+						let cc = fromColumn + csign;
+						while (rr != toRow && cc != toColumn) {
+							midRow = rr.toString();
+							midColumn = cc.toString();
+							cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							
 							if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
 								middlePieces++;
 							}
 							if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
 								legal=0;
+							}
+							rr += rsign;
+							cc += csign;
 						}
-
-						}
-						if(middlePieces>1)
-						{
+						if(middlePieces>1) {
 							legal=0;
 						}
-						else if(middlePieces == 1)
-						{
-							for(var rr = fromRow+rsign, cc = fromColumn+csign; rr != toRow, cc != toColumn; rr+=rsign, cc+=csign)
-							{
+						else if(middlePieces == 1 && legal) {
+							rr = fromRow + rsign;
+							cc = fromColumn + csign;
+							while (rr != toRow && cc != toColumn) {
 								midRow=rr.toString();
 								midColumn=cc.toString();
-								cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+								if (remove) {
+									Messages.O_TAKE_PIECE.data = {
+										row: midRow,
+										column: midColumn
+									};
+									socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
+									jump = 1;
+								}
+								/*cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 								
 								if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
 									cell.innerHTML = "";
 									cell.setAttribute("data-piece", "false");
-								}
+								}*/
+								rr += rsign;
+								cc += csign;
 							}
 						}
+						else if (haveToJump) {
+							legal = 0;
+						}
+					}
+					else if (!haveToJump) {
+						
+					}
+					else {
+						legal = 0;
 					}
 				}
 				//White King
 				else if (from.children[0].getAttribute("class") == "white-king" &&
-					color == "white") {
+				color == "white") {
 					let csign = 1;
 					let rsign = 1;
-					if(fromRow > toRow)
-					{rsign=-1;}
-					if(fromColumn>toColumn)
-					{csign=-1;}
+					if(fromRow > toRow) {
+						rsign=-1;
+					}
+					if(fromColumn>toColumn) {
+						csign=-1;
+					}
 					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
 						legal = 0;
 					}
-					else if (Math.abs(fromRow - toRow) > 2) {
+					else if (Math.abs(fromRow - toRow) >= 2) {
 						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
 						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0]; //unimportant
-						for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!=toRow, cc!=toColumn; rr+=rsign, cc+=csign)
-						{
-							midRow=rr.toString();
-							midColumn=cc.toString();
-							cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+						let rr = fromRow + rsign;
+						let cc = fromColumn + csign;
+						while (rr != toRow && cc != toColumn) {
+							midRow = rr.toString();
+							midColumn = cc.toString();
+							cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							
 							if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
 								middlePieces++;
 							}
 							if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
 								legal=0;
+							}
+							rr += rsign;
+							cc += csign;
 						}
-
-						}
-						if(middlePieces>1)
-						{
+						if(middlePieces>1) {
 							legal=0;
 						}
-						else if(middlePieces == 1)
-						{
-							for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!=toRow, cc!=toColumn; rr+=rsign, cc+=csign)
-							{
+						else if(middlePieces == 1 && legal) {
+							rr = fromRow + rsign;
+							cc = fromColumn + csign;
+							while (rr != toRow && cc != toColumn) {
 								midRow=rr.toString();
 								midColumn=cc.toString();
-								cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+								if (remove) {
+									Messages.O_TAKE_PIECE.data = {
+										row: midRow,
+										column: midColumn
+									};
+									socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
+									jump = 1;
+								}
+								/*cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 								
-								if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
+								if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
 									cell.innerHTML = "";
 									cell.setAttribute("data-piece", "false");
-								}
+								}*/
+								rr += rsign;
+								cc += csign;
 							}
 						}
+						else if (haveToJump) {
+							legal = 0;
+						}
+					}
+					else if (!haveToJump) {
+						
+					}
+					else {
+						legal = 0;
 					}
 				}
 				else {
-					legal = 0;
-				}
-				if (!myTurn && remove) {
 					legal = 0;
 				}
 				return {
@@ -509,6 +553,19 @@
 						forceJump(cell);
 					});
 					console.log(playerType + " turn started, forceJump: " + haveToJump);
+
+					
+					let hasLost = 1;
+					Array.from(board.children).forEach(function(cells) {
+						if ((cells.innerHTML == '<img class="' + color + '-piece">'||cells.innerHTML == '<img class="' + color + '-king">')
+						&& canMove(cells)) {
+							hasLost = 0;
+						}
+					});
+					if (hasLost) {
+						Messages.O_GAME_WON_BY.data = playerType;
+						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
+					}
 				}
 				if (message.type == "TAKE-PIECE") {
 					let cell = document.querySelectorAll('[data-row="'+message.data.row+'"][data-column="'+message.data.column+'"]')[0];
@@ -540,17 +597,6 @@
 					}
 					else {
 						isJump = false;
-					}
-					let hasLost = 1;
-					Array.from(board.children).forEach(function(cells) {
-						if ((cells.innerHTML == '<img class="' + color + '-piece">'||cells.innerHTML == '<img class="' + color + '-king">')
-						&& canMove(cells)) {
-							hasLost = 0;
-						}
-					});
-					if (hasLost) {
-						Messages.O_GAME_WON_BY.data = playerType;
-						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
 					}
 				}
 				if (message.type == "MESSAGE") {
