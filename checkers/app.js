@@ -177,6 +177,12 @@ wss.on("connection", function(ws) {
       }
       stats.gamesPlayed++;
     }
+
+    if (oMsg.type == "MESSAGE") {
+      console.log("MESSAGE: " + message);
+      gameObj.playerA.send(message);
+      gameObj.playerB.send(message);
+    }
   });
 
   con.on("close", function(code) {

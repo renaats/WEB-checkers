@@ -42,7 +42,7 @@
 				background-image: url("images/dark wood.jpg");
 			}
 
-			.chat {
+			#chat {
 				height: 500px;
 				border: 5px solid gray;
 			}
@@ -135,12 +135,12 @@
 
 		</div>
 		<div style="float: right" width=auto>
-			<div class="chat" style="height: 500px"></div>
+			<div id="chat" style="height: 500px"></div>
 
 			<br>
-			<form>
+			<form id="submit-text">
 				Please input your message:  
-				<input type="text" name="firstname"> <input type="submit" value="Send">
+				<input id="message-text" type="text"> <input type="submit" value="Send">
 			</form>
 		</div>
 		<main>
@@ -275,8 +275,7 @@
 				}
 				//Black king
 				else if (from.children[0].getAttribute("class") == "black-king" &&
-					document.getElementById("color").innerHTML == "black" && 
-					document.getElementById("game-state").innerHTML == "b move") {
+					color == "black") {
 					let csign = 1;
 					let rsign = 1;
 					if(fromRow > toRow)
@@ -287,13 +286,13 @@
 						legal = 0;
 					}
 					else if (Math.abs(fromRow - toRow) > 2) {
-						let midrow = "";
+						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
 						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0]; //unimportant
-						for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!==toRow, cc!==toColumn; rr+=rsign, cc+=rsign)
+						for(var rr = fromRow+rsign, cc = fromColumn+csign; rr != toRow, cc != toColumn; rr+=rsign, cc+=csign)
 						{
-							midrow=rr.toString();
+							midRow=rr.toString();
 							midColumn=cc.toString();
 							cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							
@@ -311,9 +310,9 @@
 						}
 						else if(middlePieces == 1)
 						{
-							for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!==toRow, cc!==toColumn; rr+=rsign, cc+=rsign)
+							for(var rr = fromRow+rsign, cc = fromColumn+csign; rr != toRow, cc != toColumn; rr+=rsign, cc+=csign)
 							{
-								midrow=rr.toString();
+								midRow=rr.toString();
 								midColumn=cc.toString();
 								cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 								
@@ -327,8 +326,7 @@
 				}
 				//White King
 				else if (from.children[0].getAttribute("class") == "white-king" &&
-					document.getElementById("color").innerHTML == "white" && 
-					document.getElementById("game-state").innerHTML == "a move") {
+					color == "white") {
 					let csign = 1;
 					let rsign = 1;
 					if(fromRow > toRow)
@@ -339,13 +337,13 @@
 						legal = 0;
 					}
 					else if (Math.abs(fromRow - toRow) > 2) {
-						let midrow = "";
+						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
 						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0]; //unimportant
-						for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!==toRow, cc!==toColumn; rr+=rsign, cc+=rsign)
+						for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!=toRow, cc!=toColumn; rr+=rsign, cc+=rsign)
 						{
-							midrow=rr.toString();
+							midRow=rr.toString();
 							midColumn=cc.toString();
 							cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							
@@ -363,9 +361,9 @@
 						}
 						else if(middlePieces == 1)
 						{
-							for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!==toRow, cc!==toColumn; rr+=rsign, cc+=rsign)
+							for(var rr = fromRow+rsign, cc = fromColumn+csign; rr!=toRow, cc!=toColumn; rr+=rsign, cc+=rsign)
 							{
-								midrow=rr.toString();
+								midRow=rr.toString();
 								midColumn=cc.toString();
 								cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 								
@@ -376,6 +374,9 @@
 							}
 						}
 					}
+				}
+				else {
+					legal = 0;
 				}
 				if (!myTurn && remove) {
 					legal = 0;
@@ -463,8 +464,22 @@
 				}
 			}
 
+			
+
 			var socket = new WebSocket("ws://localhost:3001");
 			var message;
+
+			
+			let element = document.getElementById("submit-text");
+			element.addEventListener("submit", function(event) {
+				let messageText = document.getElementById("message-text").value;
+				event.preventDefault();
+				console.log(event);
+				console.log(messageText);
+				Messages.O_MESSAGE.data = color.charAt(0).toUpperCase() + color.slice(1) + ": " + messageText;
+				document.getElementById("message-text").value = "";
+				socket.send(JSON.stringify(Messages.O_MESSAGE));
+			});
 
 			socket.onopen = function(){
 
@@ -507,6 +522,14 @@
 					from.innerHTML = "";
 					to.setAttribute("data-piece", "true");
 					from.setAttribute("data-piece", "false");
+					console.log(to.getAttribute("data-row") + " " + to.children[0].getAttribute("class"));
+					if (to.getAttribute("data-row") == "1" && to.children[0].getAttribute("class") == "white-piece") {
+						to.children[0].setAttribute("class", "white-king");
+					}
+					if (to.getAttribute("data-row") == "8" && to.children[0].getAttribute("class") == "black-piece") {
+						to.children[0].setAttribute("class", "black-king");
+					}
+					console.log(to.getAttribute("data-row") + " " + to.children[0].getAttribute("class"));
 
 					if (myTurn == true) {
 						forceJump(to);
@@ -529,6 +552,11 @@
 						Messages.O_GAME_WON_BY.data = playerType;
 						socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
 					}
+				}
+				if (message.type == "MESSAGE") {
+					let chat = document.getElementById("chat");
+					chat.innerHTML += message.data + "<br>";
+					console.log(chat.innerHTML);
 				}
 			};
 		</script>
