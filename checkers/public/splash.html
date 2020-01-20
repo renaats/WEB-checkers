@@ -96,6 +96,9 @@
                 right: 35%;
                 transform: rotate(-15deg);
                 font-size: 270%;
+                animation-name: opacity;
+                animation-duration: 1s;
+                animation-iteration-count: infinite;
             }
             p:nth-of-type(4)
             {
@@ -104,6 +107,15 @@
                 left: 35%;
                 transform: rotate(12deg);
                 font-size: 190%;
+            }
+
+            @keyframes opacity {
+                0%   {opacity: 1;}
+                25%  {opacity: 0.75;}
+                50%  {opacity: 0.50;}
+                75%  {opacity: 0.25;}
+                100% {opacity: 0;}
+                100% {opacity:0.5;}
             }
        </style>
 </html>
