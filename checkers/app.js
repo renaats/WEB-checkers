@@ -37,16 +37,6 @@ setInterval(function() {
 var currentGame = new Game(stats.ongoingGames++);
 var connectionID = 0;
 
-// app.use(function(req, res, next) {
-// 	console.log('[LOG] %s\t%s\t%s\t%s',
-// 		new Date().toISOString(), // timestamp
-// 		req.connection.remoteAddress, // client's address
-// 		req.method, // HTTP method
-// 		req.url // requested URL
-// 	);
-// 	next(); // call on to next component
-// });
-
 
 app.use(express.static(__dirname + "/public"));
 http.createServer(app).listen(port);
@@ -185,6 +175,7 @@ wss.on("connection", function(ws) {
         messages.O_GAME_OVER.data = "L";
         gameObj.playerA.send(JSON.stringify(messages.O_GAME_OVER));
       }
+      messages.O_GAME_STATE.data = websockets[ws.id].gameState;
       websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
       websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
       stats.gamesPlayed++;
@@ -206,8 +197,12 @@ wss.on("connection", function(ws) {
 
       if (gameObj.isValidTransition(gameObj.gameState, "aborted")) {
         gameObj.setStatus("aborted");
+        messages.O_GAME_STATE.data = websockets[ws.id].gameState;
+        websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
+        websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
+        stats.gamesPlayed++;
 
-        try {
+        /*try {
           gameObj.playerA.close();
           gameObj.playerA = null;
         } catch (e) {
@@ -219,7 +214,7 @@ wss.on("connection", function(ws) {
           gameObj.playerB = null;
         } catch (e) {
           console.log("Player B closing: " + e);
-        }
+        }*/
       }
       else if (gameObj.gameState === "2 joined") {
         gameObj.setStatus("1 joined");
@@ -248,19 +243,6 @@ wss.on("connection", function(ws) {
   });
 });
 
-
-
-/*const interval = setInterval(function ping() {
-  wss.clients.forEach(function each(ws) {
-    if (ws.isAlive === false) return ws.terminate();
-
-    ws.isAlive = false;
-    ws.ping(noop);
-    messages.O_GAME_STATE.data = websockets[ws.id].gameState;
-    ws.send(JSON.stringify(messages.O_GAME_STATE));
-    //console.log("Game state sent!");
-  });
-}, 1000);*/
 
 module.exports = app;
 

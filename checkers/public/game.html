@@ -195,7 +195,7 @@
 				
 				let legal = isOnBoard(fromRow, fromColumn) && isOnBoard(toRow, toColumn) && to.getAttribute("data-piece") == "false";
 				let jump = 0; 
-				if ((toRow + toColumn) % 2 != 1) {
+				if ((toRow + toColumn) % 2 != 1 || myTurn != 1) {
 					legal = 0;
 				}
 				if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
