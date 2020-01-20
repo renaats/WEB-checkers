@@ -14,10 +14,8 @@ var socket = new WebSocket("ws://localhost:3001");
 			};
 			socket.onmessage = function(event){
 				message = JSON.parse(event.data);
-				console.log(document.getElementById("player-type").innerHTML + ": " + event.data);
 				if (message.type == "PLAYER-TYPE") {
 					playerType = message.data;
-					document.getElementById("player-type").innerHTML = playerType;
 					if (message.data == "A") {
 						color = "white";
 					}
@@ -28,7 +26,6 @@ var socket = new WebSocket("ws://localhost:3001");
 				}
 				if (message.type == "GAME-STATE") {
 					gameState = message.data;
-					document.getElementById("game-state2").innerHTML = gameState;
 					otherPlayer = 'a';
 					if (playerType == "A") {
 						otherPlayer = 'b';
