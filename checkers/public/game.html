@@ -237,8 +237,7 @@
 					}
 				}
 				//Black king
-				else if (legal && from.children[0].getAttribute("class") == "black-king" &&
-					color == "black") {
+				else if (legal && from.children[0].getAttribute("class") == color + "-king") {
 					let csign = 1;
 					let rsign = 1;
 					if(fromRow > toRow) {
@@ -259,72 +258,11 @@
 							midColumn = cc.toString();
 							cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							
-							if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
-								middlePieces++;
-							}
-							if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
+							if (cell.innerHTML == '<img class="'+ color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">') {
 								legal=0;
 							}
-							rr += rsign;
-							cc += csign;
-						}
-						if(middlePieces>1) {
-							legal=0;
-						}
-						else if(middlePieces == 1 && legal) {
-							rr = fromRow + rsign;
-							cc = fromColumn + csign;
-							while (rr != toRow && cc != toColumn) {
-								midRow=rr.toString();
-								midColumn=cc.toString();
-								if (remove) {
-									Messages.O_TAKE_PIECE.data = {
-										row: midRow,
-										column: midColumn
-									};
-									socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
-								}
-								jump = 1;
-								rr += rsign;
-								cc += csign;
-							}
-						}
-						else if (haveToJump && remove) {
-							legal = 0;
-						}
-					}
-					else if (haveToJump && remove) {
-						legal = 0;
-					}
-				}
-				//White King
-				else if (legal && from.children[0].getAttribute("class") == "white-king" &&
-				color == "white") {
-					let csign = 1;
-					let rsign = 1;
-					if(fromRow > toRow) {
-						rsign=-1;
-					}
-					if(fromColumn>toColumn) {
-						csign=-1;
-					}
-					if (Math.abs(fromRow - toRow) >= 2) {
-						let midRow = "";
-						let midColumn="";
-						let middlePieces = 0;
-						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0]; //unimportant
-						let rr = fromRow + rsign;
-						let cc = fromColumn + csign;
-						while (rr != toRow && cc != toColumn) {
-							midRow = rr.toString();
-							midColumn = cc.toString();
-							cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
-							
-							if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
+							else if (cell.innerHTML != "") {
 								middlePieces++;
-							}
-							if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
-								legal=0;
 							}
 							rr += rsign;
 							cc += csign;
