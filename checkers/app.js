@@ -201,20 +201,6 @@ wss.on("connection", function(ws) {
         websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
         websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
         stats.gamesPlayed++;
-
-        /*try {
-          gameObj.playerA.close();
-          gameObj.playerA = null;
-        } catch (e) {
-          console.log("Player A closing: " + e);
-        }
-
-        try {
-          gameObj.playerB.close();
-          gameObj.playerB = null;
-        } catch (e) {
-          console.log("Player B closing: " + e);
-        }*/
       }
       else if (gameObj.gameState === "2 joined") {
         gameObj.setStatus("1 joined");

@@ -249,13 +249,12 @@
 						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
-						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0]; //unimportant
 						let rr = fromRow + rsign;
 						let cc = fromColumn + csign;
 						while (rr != toRow && cc != toColumn) {
 							midRow = rr.toString();
 							midColumn = cc.toString();
-							cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
+							let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 							
 							if (cell.innerHTML == '<img class="'+ color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">') {
 								legal=0;
