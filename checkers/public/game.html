@@ -172,11 +172,11 @@
 						console.log(move);
 						console.log(haveToJump);
 						if (from && move.legal && (!haveToJump || move.isJump)) {
-							Messages.O_MOVE_MADE.from = {
+							Messages.O_MOVE_MADE.data.from = {
 								row: from.getAttribute("data-row"),
 								column: from.getAttribute("data-column")
 							};
-							Messages.O_MOVE_MADE.to = {
+							Messages.O_MOVE_MADE.data.to = {
 								row: elem.target.getAttribute("data-row"),
 								column: elem.target.getAttribute("data-column")
 							};
@@ -597,8 +597,8 @@
 					cell.setAttribute("data-piece", "false");
 				}
 				if (message.type == "MOVE-MADE") {
-					let from = document.querySelectorAll('[data-row="'+message.from.row+'"][data-column="'+message.from.column+'"]')[0];
-					let to = document.querySelectorAll('[data-row="'+message.to.row+'"][data-column="'+message.to.column+'"]')[0];
+					let from = document.querySelectorAll('[data-row="'+message.data.from.row+'"][data-column="'+message.data.from.column+'"]')[0];
+					let to = document.querySelectorAll('[data-row="'+message.data.to.row+'"][data-column="'+message.data.to.column+'"]')[0];
 					to.innerHTML = from.innerHTML;
 					from.innerHTML = "";
 					to.setAttribute("data-piece", "true");

@@ -9,13 +9,15 @@
     exports.T_MOVE_MADE = "MOVE-MADE";
     exports.O_MOVE_MADE = {
         type: exports.T_MOVE_MADE,
-        from: {
-            row: null,
-            column: null
-        },
-        to: {
-            row: null,
-            column: null
+        data: {
+          from: {
+              row: null,
+              column: null
+          },
+          to: {
+              row: null,
+              column: null
+          }
         }
     };
 
