@@ -183,8 +183,12 @@ wss.on("connection", function(ws) {
 
     if (oMsg.type == "MESSAGE") {
       console.log("MESSAGE: " + message);
-      gameObj.playerA.send(message);
-      gameObj.playerB.send(message);
+      if (isPlayerA) {
+        gameObj.playerB.send(message);
+      }
+      else {
+        gameObj.playerA.send(message);
+      }
     }
   });
 

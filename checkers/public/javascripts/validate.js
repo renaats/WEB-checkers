@@ -6,6 +6,8 @@ let from = null;
 let myTurn = null;
 let isJump = false;
 let haveToJump = false;
+let yourPiecesTaken = 0;
+let enemyPiecesTaken = 0;
 Array.from(board.children).forEach(function(cell) {
     cell.onclick = function(elem) {
         if (elem.target.getAttribute("data-piece") === "true") {
