@@ -9,6 +9,8 @@
         <p><span id="movesMade">Unknown</span> Moves Made!!!</p>
         <p><span id="playersOnline">Unknown</span> Players Ingame!</p>
         <p>You Played <span id="yourGames">Unknown</span> Games!</p>
+        <img src="images/hourGlass.png">
+        <img src="images/brain.png">
     </body>
 
 
@@ -65,6 +67,26 @@
                 width: 25%;
                 height: 16.5%
             }
+            img:nth-of-type(2){
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: 150px;
+                height: auto;
+                transition: transform 3s;
+            }
+            img:nth-of-type(3){
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                width: 150px;
+                height: auto;
+                border-style: dashed;
+                border-radius: 8px;
+            }
+            img:nth-of-type(2):active{
+                transform: rotate(180deg);
+            }
             button:nth-of-type(1)
             {
                 position:absolute;
@@ -94,6 +116,14 @@
                 animation-duration: 1s;
                 animation-iteration-count: infinite;
                 animation-delay: 0.25s;
+            }
+            p:nth-of-type(1)::after
+            {
+                content: "!";
+            }
+            p:nth-of-type(1)::before
+            {
+                content: "¡¡";
             }
             p:nth-of-type(2)
             {
