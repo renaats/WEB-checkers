@@ -30,6 +30,7 @@ socket.onmessage = function(event){
         }
         document.getElementById("color").innerHTML = color;
     }
+    var timerId;
     if (message.type == "GAME-STATE") {
         gameState = message.data;
         otherPlayer = 'a';
@@ -42,12 +43,12 @@ socket.onmessage = function(event){
         else if (gameState == "2 joined") {
             console.log(gameState);
             document.getElementById("game-state").innerHTML = "Starting!";
-            let timer = setInterval(function() {
+            timerId = setInterval(function() {
                 if ((color == "white" && !myTurn)||(color == "black" && myTurn)) {
                     if (blackSeconds == 0 && blackMinutes == 0) {
                         Messages.O_GAME_WON_BY.data = "B";
                         socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
-                        clearInterval(timer);
+                        clearInterval(timerId);
                     } else if (blackSeconds == 0) {
                         blackSeconds += 59;
                         blackMinutes--;
@@ -60,7 +61,7 @@ socket.onmessage = function(event){
                     if (whiteSeconds == 0 && whiteMinutes == 0) {
                         Messages.O_GAME_WON_BY.data = "A";
                         socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
-                        clearInterval(timer);
+                        clearInterval(timerId);
                     } else if (whiteSeconds == 0) {
                         whiteSeconds += 59;
                         whiteMinutes--;
@@ -92,22 +93,22 @@ socket.onmessage = function(event){
         else if (gameState == playerType.toLowerCase() + " wins") {
             document.getElementById("game-state").innerHTML = "You won!";
             myTurn = 0;
-            clearInterval(timer);
+            clearInterval(timerId);
         }
         else if (gameState == otherPlayer + " wins") {
             document.getElementById("game-state").innerHTML = "You lost!";
             myTurn = 0;
-            clearInterval(timer);
+            clearInterval(timerId);
         }
         else if (gameState == "aborted") {
             document.getElementById("game-state").innerHTML = "Your opponent abandoned!";
             myTurn = 0;
-            clearInterval(timer);
+            clearInterval(timerId);
         }
         else {
             document.getElementById("game-state").innerHTML = "Unexpected status!";
             myTurn = 0;
-            clearInterval(timer);
+            clearInterval(timerId);
         }
     }
     if (message.type == "START-TURN") {
@@ -126,7 +127,7 @@ socket.onmessage = function(event){
                 hasLost = 0;
             }
         });
-        if (hasLost) {
+        if (hasLost && myTurn) {
             Messages.O_GAME_WON_BY.data = playerType;
             socket.send(JSON.stringify(Messages.O_GAME_WON_BY));
         }

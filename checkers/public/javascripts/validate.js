@@ -8,9 +8,9 @@ let isJump = false;
 let haveToJump = false;
 let blackPiecesTaken = 0;
 let whitePiecesTaken = 0;
-let blackMinutes = 5;
+let blackMinutes = 10;
 let blackSeconds = 0;
-let whiteMinutes = 5;
+let whiteMinutes = 10;
 let whiteSeconds = 0;
 
 
