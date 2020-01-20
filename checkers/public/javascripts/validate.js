@@ -6,8 +6,12 @@ let from = null;
 let myTurn = null;
 let isJump = false;
 let haveToJump = false;
-let yourPiecesTaken = 0;
-let enemyPiecesTaken = 0;
+let blackPiecesTaken = 0;
+let whitePiecesTaken = 0;
+let blackMinutes = 5;
+let blackSeconds = 0;
+let whiteMinutes = 5;
+let whiteSeconds = 0;
 
 
 var cols = document.getElementsByClassName('black-piece');
