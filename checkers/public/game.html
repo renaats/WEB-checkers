@@ -142,12 +142,14 @@
 				Please input your message:  
 				<input id="message-text" type="text"> <input type="submit" value="Send">
 			</form>
+			<div id="game-state"></div>
 		</div>
 		<main>
-			The game state is: <span id="game-state"></span><br>
+			The game state is: <span id="game-state2"></span><br>
 			You are player <span id="player-type"></span><br>
 			Your color is <span id="color"></span>
 		</main>
+
 		
 
 		<script src="/javascripts/messages.js"></script>
@@ -568,7 +570,35 @@
 				}
 				if (message.type == "GAME-STATE") {
 					gameState = message.data;
-					document.getElementById("game-state").innerHTML = gameState;
+					document.getElementById("game-state2").innerHTML = gameState;
+					otherPlayer = 'a';
+					if (playerType == "A") {
+						otherPlayer = 'b';
+					}
+					if (gameState == "1 joined") {
+						document.getElementById("game-state").innerHTML = "Waiting for the other player!";
+					}
+					else if (gameState == "2 joined") {
+						document.getElementById("game-state").innerHTML = "Starting!";
+					}
+					else if (gameState == (playerType.toLowerCase() + " move").toString()) {
+						document.getElementById("game-state").innerHTML = "Your turn!";
+					}
+					else if (gameState == (otherPlayer + " move").toString()) {
+						document.getElementById("game-state").innerHTML = "Wait for your turn!";
+					}
+					else if (gameState == (playerType.toLowerCase() + " wins").toString()) {
+						document.getElementById("game-state").innerHTML = "Your won!";
+					}
+					else if (gameState == (otherPlayer + " wins").toString()) {
+						document.getElementById("game-state").innerHTML = "Your lost!";
+					}
+					else if (gameState == "aborted") {
+						document.getElementById("game-state").innerHTML = "Your opponent abandoned!";
+					}
+					else {
+						document.getElementById("game-state").innerHTML = "Unexpected statusx";
+					}
 				}
 				if (message.type == "START-TURN") {
 					haveToJump = false;
