@@ -166,13 +166,9 @@
 				cell.onclick = function(elem) {
 					if (elem.target.getAttribute("data-piece") === "true") {
 						from = elem.target;
-						console.log(from);
 					}
 					else {
 						let move = isLegalMove(from, elem.target, 1);
-						console.log(from);
-						console.log(move);
-						console.log(haveToJump);
 						if (from && move.legal && (!haveToJump || move.isJump)) {
 							Messages.O_MOVE_MADE.data.from = {
 								row: from.getAttribute("data-row"),
@@ -197,57 +193,16 @@
 				let fromRow = parseInt(from.getAttribute("data-row"));
 				let fromColumn = parseInt(from.getAttribute("data-column"));
 				
-				let legal = 0;
-				if(isOnBoard(fromRow, fromColumn) && isOnBoard(toRow, toColumn) && to.getAttribute("data-piece") == "false") {
-					legal = 1;
-				}
+				let legal = isOnBoard(fromRow, fromColumn) && isOnBoard(toRow, toColumn) && to.getAttribute("data-piece") == "false";
 				let jump = 0; 
 				if ((toRow + toColumn) % 2 != 1) {
 					legal = 0;
 				}
-				if (from.children[0].getAttribute("class") == "white-piece" && 
-					color == "white") {
-					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
-						legal = 0;
-					}
-					else if (Math.abs(fromRow - toRow) > 2) {
-						legal = 0;
-					}
-					else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
-						legal = 0;
-					}
-					else if (Math.abs(fromRow - toRow) == 2) {
-						let midRow = ((fromRow + toRow) / 2).toString();
-						let midColumn = ((fromColumn + toColumn) / 2).toString();
-						let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
-						if (cell.getAttribute("data-piece") === "false") {
-							legal = 0;
-						}
-						else if (cell.innerHTML === '<img class="black-piece">' || cell.innerHTML === '<img class="black-king">') {
-							if (remove) {
-								Messages.O_TAKE_PIECE.data = {
-									row: midRow,
-									column: midColumn
-								};	
-								socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
-								jump = 1;
-							}
-						}
-						else {
-							legal = 0;
-						}
-					}
-					else if (toRow >= fromRow) {
-						legal = 0;
-					}
-					
+				if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
+					legal = 0;
 				}
-				else if (from.children[0].getAttribute("class") == "black-piece" &&
-					color == "black") {
-					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
-						legal = 0;
-					}
-					else if (Math.abs(fromRow - toRow) > 2) {
+				if (legal && from.children[0].getAttribute("class") == color + "-piece") {
+					if (Math.abs(fromRow - toRow) > 2) {
 						legal = 0;
 					}
 					else if (Math.abs(fromRow - toRow) == 1 && haveToJump) {
@@ -260,7 +215,7 @@
 						if (cell.getAttribute("data-piece") === "false") {
 							legal = 0;
 						}				
-						else if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
+						else if (cell.innerHTML != '<img class="' + color + '-piece">' && cell.innerHTML != '<img class="' + color + '-king">') {
 							if (remove) {
 								Messages.O_TAKE_PIECE.data = {
 									row: midRow,
@@ -274,12 +229,15 @@
 							legal = 0;
 						}
 					}
-					else if (toRow <= fromRow) {
+					else if (toRow <= fromRow && color == "black") {
+						legal = 0;
+					}
+					else if (toRow >= fromRow && color == "white") {
 						legal = 0;
 					}
 				}
 				//Black king
-				else if (from.children[0].getAttribute("class") == "black-king" &&
+				else if (legal && from.children[0].getAttribute("class") == "black-king" &&
 					color == "black") {
 					let csign = 1;
 					let rsign = 1;
@@ -289,10 +247,7 @@
 					if(fromColumn>toColumn) {
 						csign=-1;
 					}
-					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
-						legal = 0;
-					}
-					else if (Math.abs(fromRow - toRow) >= 2) {
+					if (Math.abs(fromRow - toRow) >= 2) {
 						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
@@ -349,7 +304,7 @@
 					}
 				}
 				//White King
-				else if (from.children[0].getAttribute("class") == "white-king" &&
+				else if (legal && from.children[0].getAttribute("class") == "white-king" &&
 				color == "white") {
 					let csign = 1;
 					let rsign = 1;
@@ -359,10 +314,7 @@
 					if(fromColumn>toColumn) {
 						csign=-1;
 					}
-					if (Math.abs(toColumn - fromColumn) !== Math.abs(toRow - fromRow)) {
-						legal = 0;
-					}
-					else if (Math.abs(fromRow - toRow) >= 2) {
+					if (Math.abs(fromRow - toRow) >= 2) {
 						let midRow = "";
 						let midColumn="";
 						let middlePieces = 0;
@@ -633,14 +585,13 @@
 					from.innerHTML = "";
 					to.setAttribute("data-piece", "true");
 					from.setAttribute("data-piece", "false");
-					console.log(to.getAttribute("data-row") + " " + to.children[0].getAttribute("class"));
 					if (to.getAttribute("data-row") == "1" && to.children[0].getAttribute("class") == "white-piece") {
 						to.children[0].setAttribute("class", "white-king");
 					}
 					if (to.getAttribute("data-row") == "8" && to.children[0].getAttribute("class") == "black-piece") {
 						to.children[0].setAttribute("class", "black-king");
 					}
-					console.log(to.getAttribute("data-row") + " " + to.children[0].getAttribute("class"));
+					
 
 					if (myTurn == true) {
 						forceJump(to);
