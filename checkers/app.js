@@ -111,6 +111,9 @@ wss.on("connection", function(ws) {
 
 
   if (websockets[con.id].gameState == "2 joined") {
+    messages.O_GAME_STATE.data = websockets[ws.id].gameState;
+    websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
+    websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
     websockets[con.id].startGame();
     if (websockets[con.id].gameState == "a move") {
         websockets[con.id].playerA.send(messages.S_START_TURN);

@@ -8,10 +8,10 @@ let isJump = false;
 let haveToJump = false;
 let blackPiecesTaken = 0;
 let whitePiecesTaken = 0;
-let yourMinutes = 5;
-let yourSeconds = 0;
-let enemyMinutes = 5;
-let enemySeconds = 0;
+let blackMinutes = 5;
+let blackSeconds = 0;
+let whiteMinutes = 5;
+let whiteSeconds = 0;
 
 
 var cols = document.getElementsByClassName('black-piece');
