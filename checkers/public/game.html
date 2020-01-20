@@ -236,7 +236,6 @@
 						legal = 0;
 					}
 				}
-				//Black king
 				else if (legal && from.children[0].getAttribute("class") == color + "-king") {
 					let csign = 1;
 					let rsign = 1;
@@ -337,6 +336,10 @@
 				if (cell.innerHTML == '<img class="' + color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">') {
 					let row = parseInt(cell.getAttribute("data-row"));
 					let column = parseInt(cell.getAttribute("data-column"));
+					let j = 7;
+					if (cell.innerHTML == '<img class="' + color + '-piece">') {
+						j = 2;
+					}
 					for (let i = 2; i <= 7; i++) {
 						if (isOnBoard(row + i, column + i)) {
 							let target = document.querySelectorAll('[data-row="'+(row+i).toString()+'"][data-column="'+(column+i).toString()+'"]')[0];
