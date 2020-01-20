@@ -128,8 +128,14 @@ wss.on("connection", function(ws) {
     if (websockets[con.id].gameState == "b move") {
         websockets[con.id].playerB.send(messages.S_START_TURN);
     }
-    
+    messages.O_GAME_STATE.data = websockets[ws.id].gameState;
+    websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
+    websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
     currentGame = new Game(stats.ongoingGames++);
+  }
+  else {
+    messages.O_GAME_STATE.data = websockets[ws.id].gameState;
+    websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
   }
 
   con.on("message", function incoming(message) {
@@ -154,6 +160,9 @@ wss.on("connection", function(ws) {
         gameObj.setStatus("a move");
         gameObj.playerA.send(messages.S_START_TURN);
       }
+      messages.O_GAME_STATE.data = websockets[ws.id].gameState;
+      websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
+      websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
     }
 
     if (oMsg.type == "TAKE-PIECE") {
@@ -176,6 +185,8 @@ wss.on("connection", function(ws) {
         messages.O_GAME_OVER.data = "L";
         gameObj.playerA.send(JSON.stringify(messages.O_GAME_OVER));
       }
+      websockets[con.id].playerA.send(JSON.stringify(messages.O_GAME_STATE));
+      websockets[con.id].playerB.send(JSON.stringify(messages.O_GAME_STATE));
       stats.gamesPlayed++;
     }
 
@@ -239,7 +250,7 @@ wss.on("connection", function(ws) {
 
 
 
-const interval = setInterval(function ping() {
+/*const interval = setInterval(function ping() {
   wss.clients.forEach(function each(ws) {
     if (ws.isAlive === false) return ws.terminate();
 
@@ -249,7 +260,7 @@ const interval = setInterval(function ping() {
     ws.send(JSON.stringify(messages.O_GAME_STATE));
     //console.log("Game state sent!");
   });
-}, 1000);
+}, 1000);*/
 
 module.exports = app;
 
