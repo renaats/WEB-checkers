@@ -15,7 +15,6 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script>
-        //var socket = new WebSocket("ws://localhost:3001");
         document.addEventListener("load", reload());
         function incrementCookie() {
             var playCount = getCookie("playCount");
@@ -35,7 +34,10 @@
                 document.getElementById("gamesPlayed").innerHTML = res.gamesPlayed;
                 document.getElementById("movesMade").innerHTML = res.movesMade;
                 document.getElementById("playersOnline").innerHTML = res.playersOnline;
-                document.getElementById("yourGames").innerHTML = getCookie("playCount");
+                if(getCookie("playCount")=="")
+                    document.getElementById("yourGames").innerHTML = "0";
+                else
+                    document.getElementById("yourGames").innerHTML = getCookie("playCount");
             });
         };
 
