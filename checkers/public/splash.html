@@ -5,7 +5,7 @@
         <form action="/play" method="get">
             <button onclick="incrementCookie()">Play!</button>
         </form>
-        <p><span id="gamesPlayed">Unknown</span> Games Played!</p>
+        <p><span id="gamesPlayed">Unknown</span> Games Played</p>
         <p><span id="movesMade">Unknown</span> Moves Made!!!</p>
         <p><span id="playersOnline">Unknown</span> Players Ingame!</p>
         <p>You Played <span id="yourGames">Unknown</span> Games!</p>
@@ -90,10 +90,13 @@
             button:nth-of-type(1)
             {
                 position:absolute;
+                font-size: 25px;
+                background-color:yellowgreen;
+                margin: 10px;
                 top: 44%;
                 left: 41%;
                 width: 18%;
-                height: 30px;
+                height: 35px;
                 transition: width 2s, left 2s, background-color 3s, height 1.5s, border-radius 1.5s, color 3s;
             }
             button:nth-of-type(1):hover 
@@ -119,11 +122,13 @@
             }
             p:nth-of-type(1)::after
             {
-                content: "!";
+                margin: 10px;
+                content: "!!";
             }
             p:nth-of-type(1)::before
             {
                 content: "¡¡";
+                margin: 10px;
             }
             p:nth-of-type(2)
             {
