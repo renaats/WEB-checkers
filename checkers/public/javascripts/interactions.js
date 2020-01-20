@@ -81,13 +81,13 @@ socket.onmessage = function(event){
     }
     if (message.type == "TAKE-PIECE") {
         let cell = document.querySelectorAll('[data-row="'+message.data.row+'"][data-column="'+message.data.column+'"]')[0];
-        if (cell.children[0].getAttribute("class") == color + "-piece" || cell.children[0].getAttribute("class") == color + "-king") {
-            yourPiecesTaken++;
-            document.getElementById("your-pieces-taken").innerHTML = yourPiecesTaken;
+        if (cell.children[0].getAttribute("class") == "black-piece" || cell.children[0].getAttribute("class") == "black-king") {
+            blackPiecesTaken++;
+            document.getElementById("black-pieces-taken").innerHTML = blackPiecesTaken;
         }
         else {
-            enemyPiecesTaken++;
-            document.getElementById("enemy-pieces-taken").innerHTML = enemyPiecesTaken;
+            whitePiecesTaken++;
+            document.getElementById("white-pieces-taken").innerHTML = whitePiecesTaken;
         }
         cell.innerHTML = "";
         cell.setAttribute("data-piece", "false");
