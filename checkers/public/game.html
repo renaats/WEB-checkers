@@ -326,8 +326,8 @@
 										column: midColumn
 									};
 									socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
-									jump = 1;
 								}
+								jump = 1;
 								/*cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 								
 								if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
@@ -338,14 +338,11 @@
 								cc += csign;
 							}
 						}
-						else if (haveToJump) {
+						else if (haveToJump && remove) {
 							legal = 0;
 						}
 					}
-					else if (!haveToJump) {
-						
-					}
-					else {
+					else if (haveToJump && remove) {
 						legal = 0;
 					}
 				}
@@ -399,8 +396,8 @@
 										column: midColumn
 									};
 									socket.send(JSON.stringify(Messages.O_TAKE_PIECE));
-									jump = 1;
 								}
+								jump = 1;
 								/*cell= document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
 								
 								if (cell.innerHTML === '<img class="white-piece">' || cell.innerHTML === '<img class="white-king">') {
@@ -411,14 +408,11 @@
 								cc += csign;
 							}
 						}
-						else if (haveToJump) {
+						else if (haveToJump && remove) {
 							legal = 0;
 						}
 					}
-					else if (!haveToJump) {
-						
-					}
-					else {
+					else if (haveToJump && remove) {
 						legal = 0;
 					}
 				}
@@ -504,6 +498,36 @@
 						over.innerHTML != '<img class="' + color + '-piece">' && over.innerHTML != '<img class="' + color + '-king">' ) {
 							haveToJump = true;
 						}
+					}
+				}
+				if (cell.innerHTML == '<img class="' + color + '-king">') {
+					let row = parseInt(cell.getAttribute("data-row"));
+					let column = parseInt(cell.getAttribute("data-column"));
+					for (let i = 3; i <= 7; i++) {
+						if (isOnBoard(row + i, column + i)) {
+							let target = document.querySelectorAll('[data-row="'+(row+i).toString()+'"][data-column="'+(column+i).toString()+'"]')[0];
+							if (isLegalMove(cell, target, 0).legal && isLegalMove(cell, target, 0).isJump) {
+								haveToJump = true;
+							}
+						}
+						if (isOnBoard(row + i, column - i)) {
+							let target = document.querySelectorAll('[data-row="'+(row+i).toString()+'"][data-column="'+(column-i).toString()+'"]')[0];
+							if (isLegalMove(cell, target, 0).legal && isLegalMove(cell, target, 0).isJump) {
+								haveToJump = true;
+							}
+						}
+						if (isOnBoard(row - i, column + i)) {
+							let target = document.querySelectorAll('[data-row="'+(row-i).toString()+'"][data-column="'+(column+i).toString()+'"]')[0];
+							if (isLegalMove(cell, target, 0).legal && isLegalMove(cell, target, 0).isJump) {
+								haveToJump = true;
+							}
+						}
+						if (isOnBoard(row - i, column - i)) {
+							let target = document.querySelectorAll('[data-row="'+(row-i).toString()+'"][data-column="'+(column-i).toString()+'"]')[0];
+							if (isLegalMove(cell, target, 0).legal && isLegalMove(cell, target, 0).isJump) {
+								haveToJump = true;
+							}
+						}	
 					}
 				}
 			}
