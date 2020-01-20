@@ -413,16 +413,16 @@
 					else if (gameState == "2 joined") {
 						document.getElementById("game-state").innerHTML = "Starting!";
 					}
-					else if (gameState == (playerType.toLowerCase() + " move").toString()) {
+					else if (gameState == playerType.toLowerCase() + " move") {
 						document.getElementById("game-state").innerHTML = "Your turn!";
 					}
-					else if (gameState == (otherPlayer + " move").toString()) {
+					else if (gameState == otherPlayer + " move") {
 						document.getElementById("game-state").innerHTML = "Wait for your turn!";
 					}
-					else if (gameState == (playerType.toLowerCase() + " wins").toString()) {
+					else if (gameState == playerType.toLowerCase() + " wins") {
 						document.getElementById("game-state").innerHTML = "Your won!";
 					}
-					else if (gameState == (otherPlayer + " wins").toString()) {
+					else if (gameState == otherPlayer + " wins") {
 						document.getElementById("game-state").innerHTML = "Your lost!";
 					}
 					else if (gameState == "aborted") {
