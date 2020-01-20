@@ -80,7 +80,7 @@ function isLegalMove(from, to, remove) {
             if (cell.getAttribute("data-piece") === "false") {
                 legal = 0;
             }				
-            else if (cell.innerHTML != '<img class="' + color + '-piece">' && cell.innerHTML != '<img class="' + color + '-king">') {
+            else if (cell.children[0].getAttribute("class") != color + '-piece' && cell.children[0].getAttribute("class") != color + '-king') {
                 if (remove) {
                     Messages.O_TAKE_PIECE.data = {
                         row: midRow,
@@ -121,7 +121,7 @@ function isLegalMove(from, to, remove) {
                 midColumn = cc.toString();
                 let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
                 
-                if (cell.innerHTML == '<img class="'+ color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">') {
+                if (cell.children[0].getAttribute("class") == color + '-piece' || cell.children[0].getAttribute("class") == color + '-king') {
                     legal=0;
                 }
                 else if (cell.innerHTML != "") {
@@ -197,14 +197,17 @@ function canMove(cell) {
 }
 
 function forceJump(cell){
-    if (cell.innerHTML == '<img class="' + color + '-piece">' || cell.innerHTML == '<img class="' + color + '-king">') {
+    if (cell.children.length == 0) {
+        return;
+    }
+    if (cell.children[0].getAttribute("class") == color + '-piece' || cell.children[0].getAttribute("class") == color + '-king') {
         let row = parseInt(cell.getAttribute("data-row"));
         let column = parseInt(cell.getAttribute("data-column"));
         let j = 7;
-        if (cell.innerHTML == '<img class="' + color + '-piece">') {
+        if (cell.children[0].getAttribute("class") == color + '-piece') {
             j = 2;
         }
-        for (let i = 2; i <= 7; i++) {
+        for (let i = 2; i <= j; i++) {
             if (isOnBoard(row + i, column + i)) {
                 let target = document.querySelectorAll('[data-row="'+(row+i).toString()+'"][data-column="'+(column+i).toString()+'"]')[0];
                 if (isLegalMove(cell, target, 0).legal && isLegalMove(cell, target, 0).isJump) {

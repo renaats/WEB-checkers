@@ -69,7 +69,7 @@ socket.onmessage = function(event){
         
         let hasLost = 1;
         Array.from(board.children).forEach(function(cells) {
-            if ((cells.innerHTML == '<img class="' + color + '-piece">'||cells.innerHTML == '<img class="' + color + '-king">')
+            if (cells.children.length > 0 && (cells.children[0].getAttribute("class") == color + '-piece'||cells.children[0].getAttribute("class") == color + '-king')
             && canMove(cells)) {
                 hasLost = 0;
             }
