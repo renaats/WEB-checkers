@@ -185,7 +185,7 @@ wss.on("connection", function(ws) {
       if (isPlayerA && gameObj.playerB != null) {
         gameObj.playerB.send(message);
       }
-      else {
+      else if (!isPlayerA) {
         gameObj.playerA.send(message);
       }
     }
