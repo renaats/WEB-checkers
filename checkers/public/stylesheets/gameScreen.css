@@ -103,6 +103,15 @@ and (max-width:1300px){
     font-size: 20px;
     top: 710px;
 }
+#rulesButton{
+    position: fixed;
+    top:750px;
+    left:35px;
+}
+
+#rules{
+    opacity: 0;
+}
 #chat {
     height: 600px;
     width:550px;
