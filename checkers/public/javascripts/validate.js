@@ -13,6 +13,22 @@ let blackSeconds = 0;
 let whiteMinutes = 10;
 let whiteSeconds = 0;
 
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }
+}
+let fraud = new sound("/audio/fraud.mp4");
+
 Array.from(board.children).forEach(function(cell) {
     cell.onclick = function(elem) {
         if (elem.target.getAttribute("data-piece") === "true") {
@@ -33,6 +49,9 @@ Array.from(board.children).forEach(function(cell) {
                 haveToJump = false;
                 socket.send(JSON.stringify(Messages.O_MOVE_MADE));
                 from = null;
+            }
+            else {
+                fraud.play();
             }
         }
     }
