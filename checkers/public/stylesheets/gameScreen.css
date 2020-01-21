@@ -47,33 +47,33 @@
 .black {
     background-image: url("../images/dark wood.jpg");
 }
-#whiteTimer
-{
-    position: absolute;
-    left: 10px;
-    font-size: 20px;
-    bottom: 120px;
-}
-#whiteTaken
-{
-    position: absolute;
-    left: 460px;
-    font-size: 20px;
-    bottom: 120px; 
-}
 #blackTimer
 {
     position: absolute;
     left: 10px;
     font-size: 20px;
-    bottom: 780px;
+    top: 120px;
 }
 #blackTaken
 {
     position: absolute;
     left: 460px;
     font-size: 20px;
-    bottom: 780px;
+    top: 120px; 
+}
+#whiteTimer
+{
+    position: absolute;
+    left: 10px;
+    font-size: 20px;
+    top: 780px;
+}
+#whiteTaken
+{
+    position: absolute;
+    left: 460px;
+    font-size: 20px;
+    top: 780px;
 }
 #chat {
     height: 500px;
