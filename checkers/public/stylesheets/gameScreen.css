@@ -34,7 +34,7 @@
     display: table-cell;
     position: absolute;
     left: 10px;
-    top: 165px;
+    top: 50px;
 }
 .white, .black {
     float: left;
@@ -52,28 +52,28 @@
     position: absolute;
     left: 10px;
     font-size: 20px;
-    top: 120px;
+    top: 10px;
 }
 #blackTaken
 {
     position: absolute;
     left: 460px;
     font-size: 20px;
-    top: 120px; 
+    top: 10px; 
 }
 #whiteTimer
 {
     position: absolute;
     left: 10px;
     font-size: 20px;
-    top: 780px;
+    top: 680px;
 }
 #whiteTaken
 {
     position: absolute;
     left: 460px;
     font-size: 20px;
-    top: 780px;
+    top: 680px;
 }
 #chat {
     height: 500px;
