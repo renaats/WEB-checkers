@@ -6,7 +6,7 @@
 	</head>
 
 	<body style="background-color: #e7e3e3">
-		<img src="images/finalLogo.png">
+		<img src="images/finalLogo.png" class="logo">
 		<div style="float: left">
 			<div class="board">
 				<!-- Row 1 -->
@@ -100,11 +100,11 @@
 				<input id="message-text" type="text"> <input type="submit" value="Send">
 			</form>
 			<div id="game-state"></div>
-			<div>You are playing as <span id="color"></span></div>
-			<div>Pieces taken: <span id="white-pieces-taken">0</span></div>
-			<div>Pieces taken: <span id="black-pieces-taken">0</span></div>
-			<div>Time remaining: <span id="black-timer">0</span></div>
-			<div>Time remaining: <span id="white-timer">0</span></div>
+			<div id="yourColor">You are playing as <span id="color"></span></div>
+			<div id="whiteTaken">Pieces taken: <span id="white-pieces-taken">0</span></div>
+			<div id="blackTaken">Pieces taken: <span id="black-pieces-taken">0</span></div>
+			<div id="blackTimer">Time remaining: <span id="black-timer">0</span></div>
+			<div id="whiteTimer">Time remaining: <span id="white-timer">0</span></div>
 		</div>
 		
 		<script src="/javascripts/messages.js"></script>
