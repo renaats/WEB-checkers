@@ -15,7 +15,34 @@
     top:10px;
     width: 400px;
 }
-
+#body
+{
+  background-color: #e7e3e3;
+}
+#alert
+{
+    position: absolute;
+    top:10px;
+    font-size: 15px;
+    left: 10px;
+    opacity: 0; 
+    background-color: gold;
+}
+@media only screen
+and (max-width:1300px){
+    #alert
+    {
+        opacity: 1;
+    }
+}
+#alert:before
+{
+    content: "The recommended ";
+}
+#alert:after
+{
+    content: "resolution to play this game is higer then your screen's resoulution";
+}
 .white-piece {
     content: url("../images/White.png");
 }
@@ -114,6 +141,10 @@
     left: 700px;
     top: 800px;
     font-size: 50px;
+}
+#div
+{
+    float: left
 }
 
 @keyframes rainbow{
