@@ -134,11 +134,11 @@ socket.onmessage = function(event){
     }
     if (message.type == "TAKE-PIECE") {
         let cell = document.querySelectorAll('[data-row="'+message.data.row+'"][data-column="'+message.data.column+'"]')[0];
-        if (cell.children[0].getAttribute("class") == "black-piece" || cell.children[0].getAttribute("class") == "black-king") {
+        if (cell.children.length > 0 && (cell.children[0].getAttribute("class") == "black-piece" || cell.children[0].getAttribute("class") == "black-king")) {
             blackPiecesTaken++;
             document.getElementById("black-pieces-taken").innerHTML = blackPiecesTaken;
         }
-        else {
+        else if (cell.children.length > 0) {
             whitePiecesTaken++;
             document.getElementById("white-pieces-taken").innerHTML = whitePiecesTaken;
         }
