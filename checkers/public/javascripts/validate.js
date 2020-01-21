@@ -13,24 +13,6 @@ let blackSeconds = 0;
 let whiteMinutes = 10;
 let whiteSeconds = 0;
 
-
-var cols = document.getElementsByClassName('black-piece');
-for(i = 0; i < cols.length; i++) {
-    cols[i].src = "images/Black.png";
-}
-var cols = document.getElementsByClassName('black-king');
-for(i = 0; i < cols.length; i++) {
-    cols[i].src = "images/Black-king.png";
-}
-var cols = document.getElementsByClassName('white-piece');
-for(i = 0; i < cols.length; i++) {
-    cols[i].src = "images/White.png";
-}
-var cols = document.getElementsByClassName('white-king');
-for(i = 0; i < cols.length; i++) {
-    cols[i].src = "images/White-king.png";
-}
-
 Array.from(board.children).forEach(function(cell) {
     cell.onclick = function(elem) {
         if (elem.target.getAttribute("data-piece") === "true") {
