@@ -57,14 +57,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.get("/stats/", function(req, res, next) {
-  res.sendFile(__dirname + '/statistics.js');  
-});
-
-app.get("/updateStats/", function(req, res) {
-  res.json(stats);
-});
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
