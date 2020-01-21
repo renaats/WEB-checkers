@@ -1,4 +1,4 @@
-Board. The game is played on an 8×8 board with alternating dark and light squares.
+Board. The game is played on an 8×8 board with alternating dark and light squares. All pieces move only on the dark squares.
 Starting position. Each player starts with 12 pieces on the three rows closest to their own side.
 Pieces. There are two kinds of pieces: "men" and "kings". Kings are differentiated as having a crown on top.
 Men. Men move forward diagonally to an adjacent unoccupied square.
