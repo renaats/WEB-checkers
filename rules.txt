@@ -1,0 +1,8 @@
+Board. The game is played on an 8×8 board with alternating dark and light squares.
+Starting position. Each player starts with 12 pieces on the three rows closest to their own side.
+Pieces. There are two kinds of pieces: "men" and "kings". Kings are differentiated as having a crown on top.
+Men. Men move forward diagonally to an adjacent unoccupied square.
+Kings. If a player's piece moves into the kings row on the opposing player's side of the board, that piece is to be "crowned", becoming a "king" and gaining the ability to move backwards as well as forwards and to choose on which free square on this diagonal to stop.
+Capture. If the adjacent square contains an opponent's piece, and the square immediately beyond it is vacant, the opponent's piece may be captured (and removed from the game) by jumping over it. Jumping can be done forward and backward. Multiple-jump moves are possible if, when the jumping piece lands, there is another piece that can be jumped. Jumping is mandatory and cannot be passed up to make a non-jumping move. When there is more than one way for a player to jump, one may choose which sequence to make, not necessarily the sequence that will result in the most captures.
+If a man touches the kings row during a capture and can continue a capture, it jumps backwards as a king. All captures can be done both forwards and backwards.
+Winning and losing. A player with no valid move remaining loses. This is the case if the player either has no pieces left or if a player's pieces are obstructed from making a legal move by the pieces of the opponent. Each player has a total move timer of 10 minutes.
