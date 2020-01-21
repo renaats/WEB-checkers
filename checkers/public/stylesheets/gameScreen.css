@@ -11,8 +11,9 @@
 .logo
 {
     position: fixed;
-    right: 20px;
+    right: 85px;
     top:10px;
+    width: 400px;
 }
 
 .white-piece {
@@ -76,8 +77,22 @@
     top: 710px;
 }
 #chat {
-    height: 500px;
+    height: 600px;
+    width:550px;
     border: 5px solid gray;
+    position: absolute;
+    top: 150px;
+    right: 30px;
+}
+#submit-text {
+    position: absolute;
+    top: 780px;
+    right: 30px;
+}
+#game-state{
+    position: absolute;
+    left: 800px;
+    font-size: 30px;
 }
 #chat:hover
 {
@@ -89,6 +104,9 @@
 #message-text:active{
     border-style: solid;
     border-color:purple;
+}
+#message-text{
+    transition: border-color 2s;
 }
 #yourColor
 {
