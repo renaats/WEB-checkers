@@ -8,6 +8,13 @@
     margin-top: 7.5px;
     margin-bottom: auto;
 }
+.logo
+{
+    position: fixed;
+    right: 20px;
+    top:10px;
+}
+
 .white-piece {
     content: url("../images/White.png");
 }
@@ -25,6 +32,9 @@
     width: 600px;
     height: 600px;
     display: table-cell;
+    position: absolute;
+    left: 10px;
+    bottom: 165px;
 }
 .white, .black {
     float: left;
@@ -37,8 +47,44 @@
 .black {
     background-image: url("../images/dark wood.jpg");
 }
-
+#whiteTimer
+{
+    position: absolute;
+    left: 10px;
+    font-size: 20px;
+    bottom: 120px;
+}
+#whiteTaken
+{
+    position: absolute;
+    left: 460px;
+    font-size: 20px;
+    bottom: 120px; 
+}
+#blackTimer
+{
+    position: absolute;
+    left: 10px;
+    font-size: 20px;
+    bottom: 780px;
+}
+#blackTaken
+{
+    position: absolute;
+    left: 460px;
+    font-size: 20px;
+    bottom: 780px;
+}
 #chat {
     height: 500px;
     border: 5px solid gray;
+}
+#chat:hover
+{
+    border-color: yellow;
+}
+
+#message-text:active{
+    border-style: solid;
+    border-color:purple;
 }
