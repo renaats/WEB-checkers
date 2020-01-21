@@ -107,10 +107,10 @@ function isLegalMove(from, to, remove) {
                 midColumn = cc.toString();
                 let cell = document.querySelectorAll('[data-row="'+midRow+'"][data-column="'+midColumn+'"]')[0];
                 
-                if (cell.children[0].getAttribute("class") == color + '-piece' || cell.children[0].getAttribute("class") == color + '-king') {
+                if (cell.children.length > 0 && (cell.children[0].getAttribute("class") == color + '-piece' || cell.children[0].getAttribute("class") == color + '-king')) {
                     legal=0;
                 }
-                else if (cell.innerHTML != "") {
+                else if (cell.children.length > 0 && cell.innerHTML != "") {
                     middlePieces++;
                 }
                 rr += rsign;
