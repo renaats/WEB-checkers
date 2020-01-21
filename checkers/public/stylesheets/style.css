@@ -1,8 +1,114 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+img:nth-of-type(1){
+  position: fixed;
+  top: 25%;
+  left: 37.5%;
+  width: 25%;
+  height: 16.5%
+}
+img:nth-of-type(2){
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 150px;
+  height: auto;
+  transition: transform 3s;
+}
+img:nth-of-type(3){
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 150px;
+  height: auto;
+  border-style: dashed;
+  border-radius: 8px;
+}
+img:nth-of-type(2):active{
+  transform: rotate(180deg);
+}
+button:nth-of-type(1)
+{
+  position:absolute;
+  font-size: 25px;
+  background-color:yellowgreen;
+  margin: 10px;
+  top: 44%;
+  left: 41%;
+  width: 18%;
+  height: 35px;
+  transition: width 2s, left 2s, background-color 3s, height 1.5s, border-radius 1.5s, color 3s;
+}
+button:nth-of-type(1):hover 
+{
+  width: 50%;
+  left: 25%;
+  background-color: crimson;
+  color: white;
+  height: 50px;
+  border-radius: 8px;
+}
+p:nth-of-type(1)
+{
+  position: fixed;
+  top: 65%;
+  left: 10%;
+  transform: rotate(30deg);
+  font-size: 240%;
+  animation-name: opacity;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.25s;
+}
+p:nth-of-type(1)::after
+{
+  margin: 10px;
+  content: "!!";
+}
+p:nth-of-type(1)::before
+{
+  content: "¡¡";
+  margin: 10px;
+}
+p:nth-of-type(2)
+{
+  position: fixed;
+  top: 65%;
+  right: 10%;
+  transform: rotate(10deg);
+  font-size: 170%;
+  animation-name: opacity;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.75s;
+}
+p:nth-of-type(3)
+{
+  position: fixed;
+  top: 75%;
+  right: 35%;
+  transform: rotate(-15deg);
+  font-size: 270%;
+  animation-name: opacity;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+p:nth-of-type(4)
+{
+  position: fixed;
+  top: 55%;
+  left: 35%;
+  transform: rotate(12deg);
+  font-size: 190%;
+  animation-name: opacity;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.5s;
 }
 
-a {
-  color: #00B7FF;
+@keyframes opacity {
+  0%   {opacity: 1;}
+  25%  {opacity: 0.75;}
+  50%  {opacity: 0.50;}
+  75%  {opacity: 0.25;}
+  100% {opacity: 0;}
+  100% {opacity:0.5;}
 }
