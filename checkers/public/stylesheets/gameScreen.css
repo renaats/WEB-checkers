@@ -34,7 +34,7 @@
     display: table-cell;
     position: absolute;
     left: 10px;
-    bottom: 165px;
+    top: 165px;
 }
 .white, .black {
     float: left;
