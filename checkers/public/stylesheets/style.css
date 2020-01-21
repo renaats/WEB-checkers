@@ -61,7 +61,7 @@ p:nth-of-type(1)
 p:nth-of-type(1)::after
 {
   margin: 10px;
-  content: "!";
+  content: "!!";
 }
 p:nth-of-type(1)::before
 {
