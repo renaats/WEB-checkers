@@ -33,8 +33,8 @@
     height: 600px;
     display: table-cell;
     position: absolute;
-    left: 10px;
-    top: 50px;
+    left: 40px;
+    top: 90px;
 }
 .white, .black {
     float: left;
@@ -50,30 +50,30 @@
 #blackTimer
 {
     position: absolute;
-    left: 10px;
+    left: 40px;
     font-size: 20px;
-    top: 10px;
+    top: 40px;
 }
 #blackTaken
 {
     position: absolute;
-    left: 460px;
+    left: 490px;
     font-size: 20px;
-    top: 10px; 
+    top: 40px; 
 }
 #whiteTimer
 {
     position: absolute;
-    left: 10px;
+    left: 40px;
     font-size: 20px;
-    top: 680px;
+    top: 710px;
 }
 #whiteTaken
 {
     position: absolute;
-    left: 460px;
+    left: 490px;
     font-size: 20px;
-    top: 680px;
+    top: 710px;
 }
 #chat {
     height: 500px;
@@ -81,10 +81,57 @@
 }
 #chat:hover
 {
-    border-color: yellow;
+    
+    animation: rainbow 2.5s linear;
+	animation-iteration-count: infinite;
 }
 
 #message-text:active{
     border-style: solid;
     border-color:purple;
 }
+#yourColor
+{
+    position: absolute;
+    left: 700px;
+    top: 800px;
+    font-size: 50px;
+}
+
+@keyframes rainbow{
+    100%,0%{
+        border-color: rgb(255,0,0);
+    }
+    8%{
+        border-color: rgb(255,127,0);
+    }
+    16%{
+        border-color: rgb(255,255,0);
+    }
+    25%{
+        border-color: rgb(127,255,0);
+    }
+    33%{
+        border-color: rgb(0,255,0);
+    }
+    41%{
+        border-color: rgb(0,255,127);
+    }
+    50%{
+        border-color: rgb(0,255,255);
+    }
+    58%{
+        border-color: rgb(0,127,255);
+    }
+    66%{
+        border-color: rgb(0,0,255);
+    }
+    75%{
+        border-color: rgb(127,0,255);
+    }
+    83%{
+        border-color: rgb(255,0,255);
+    }
+    91%{
+        border-color: rgb(255,0,127);
+    }}
