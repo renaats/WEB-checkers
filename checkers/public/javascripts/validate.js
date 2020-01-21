@@ -1,3 +1,31 @@
+Array.from(board.children).forEach(function(cell) {
+    cell.onclick = function(elem) {
+        if (elem.target.getAttribute("data-piece") === "true") {
+            from = elem.target;
+        }
+        else {
+            let move = isLegalMove(from, elem.target, 1);
+            if (from && move.legal && (!haveToJump || move.isJump)) {
+                Messages.O_MOVE_MADE.data.from = {
+                    row: from.getAttribute("data-row"),
+                    column: from.getAttribute("data-column")
+                };
+                Messages.O_MOVE_MADE.data.to = {
+                    row: elem.target.getAttribute("data-row"),
+                    column: elem.target.getAttribute("data-column")
+                };
+                isJump = move.isJump;
+                haveToJump = false;
+                socket.send(JSON.stringify(Messages.O_MOVE_MADE));
+                from = null;
+            }
+            else {
+                fraud.play();
+            }
+        }
+    }
+});
+
 function isLegalMove(from, to, remove) {
     let toRow = parseInt(to.getAttribute("data-row"));
     let toColumn = parseInt(to.getAttribute("data-column"));

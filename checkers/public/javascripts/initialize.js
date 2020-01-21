@@ -12,6 +12,7 @@ let blackMinutes = 10;
 let blackSeconds = 0;
 let whiteMinutes = 10;
 let whiteSeconds = 0;
+let ongoing = false;
 
 function sound(src) {
     this.sound = document.createElement("audio");
@@ -28,31 +29,3 @@ function sound(src) {
     }
 }
 let fraud = new sound("/audio/fraud.mp4");
-
-Array.from(board.children).forEach(function(cell) {
-    cell.onclick = function(elem) {
-        if (elem.target.getAttribute("data-piece") === "true") {
-            from = elem.target;
-        }
-        else {
-            let move = isLegalMove(from, elem.target, 1);
-            if (from && move.legal && (!haveToJump || move.isJump)) {
-                Messages.O_MOVE_MADE.data.from = {
-                    row: from.getAttribute("data-row"),
-                    column: from.getAttribute("data-column")
-                };
-                Messages.O_MOVE_MADE.data.to = {
-                    row: elem.target.getAttribute("data-row"),
-                    column: elem.target.getAttribute("data-column")
-                };
-                isJump = move.isJump;
-                haveToJump = false;
-                socket.send(JSON.stringify(Messages.O_MOVE_MADE));
-                from = null;
-            }
-            else {
-                fraud.play();
-            }
-        }
-    }
-});
