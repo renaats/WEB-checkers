@@ -44,6 +44,9 @@ http.createServer(app).listen(port);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.get('/', function(req, res) {
+  res.render('splash.ejs', {gamesPlayed: stats.gamesPlayed, movesMade: stats.movesMade, playersIngame: stats.playersIngame});
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -90,7 +93,7 @@ wss.on("connection", function(ws) {
   ws.on('pong', heartbeat);
 
   console.log("connected");
-  stats.playersOnline++;
+  stats.playersIngame++;
   let con = ws;
   con.id = connectionID++;
   let playerType = currentGame.addPlayer(con);
@@ -197,7 +200,7 @@ wss.on("connection", function(ws) {
 
   con.on("close", function(code) {
     console.log("disconnected");
-    stats.playersOnline--;
+    stats.playersIngame--;
     console.log(con.id + " disconnected ...");
     //if (code == "1001") {
       let gameObj = websockets[con.id];
