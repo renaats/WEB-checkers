@@ -131,6 +131,7 @@ and (max-width:1300px){
     right: 30px;
     padding:5px;
     margin:0.8px;
+    font-size: 19px;
 }
 #chat{
     opacity:1;
@@ -178,6 +179,13 @@ and (max-width:1300px){
     font-size: 20px;
 }
 
+#fs-toggle {
+    position: absolute;
+    top: 760px;
+    left: 40px;
+    font-size: 18px;
+}
+
 @keyframes rainbow{
     100%,0%{
         border-color: rgb(255,0,0);
@@ -214,4 +222,5 @@ and (max-width:1300px){
     }
     91%{
         border-color: rgb(255,0,127);
-    }}
+    }
+}
