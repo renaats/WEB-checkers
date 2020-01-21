@@ -11,7 +11,7 @@
 .logo
 {
     position: fixed;
-    right: 85px;
+    right: 110px;
     top:10px;
     width: 400px;
 }
@@ -80,34 +80,35 @@ and (max-width:1300px){
 {
     position: absolute;
     left: 40px;
-    font-size: 20px;
-    top: 40px;
+    font-size: 22px;
+    top: 45px;
 }
 #blackTaken
 {
     position: absolute;
-    left: 490px;
-    font-size: 20px;
-    top: 40px; 
+    left: 500px;
+    font-size: 22px;
+    top: 45px; 
 }
 #whiteTimer
 {
     position: absolute;
     left: 40px;
-    font-size: 20px;
+    font-size: 22px;
     top: 710px;
 }
 #whiteTaken
 {
     position: absolute;
-    left: 490px;
-    font-size: 20px;
+    left: 500px;
+    font-size: 22px;
     top: 710px;
 }
 #rulesButton{
     position: absolute;
     top:200px;
     right:600px;
+    font-size: 22px;
 }
 #rulesButton:hover ~ #chat {
 
@@ -138,12 +139,12 @@ and (max-width:1300px){
     position: absolute;
     top: 780px;
     right: 30px;
-    font-size: 21px;
+    font-size: 24px;
 }
 #game-state{
     position: absolute;
-    left: 800px;
-    font-size: 30px;
+    left: 780px;
+    font-size: 34px;
 }
 #chat:hover
 {
@@ -157,18 +158,24 @@ and (max-width:1300px){
     border-color:purple;
 }
 #message-text{
+    width: 230px;
+    height: 23px;
     transition: border-color 2s;
 }
 #yourColor
 {
     position: absolute;
-    left: 670px;
-    top: 800px;
+    left: 700px;
+    top: 750px;
     font-size: 50px;
 }
 #div
 {
     float: left
+}
+
+#submit-button {
+    font-size: 20px;
 }
 
 @keyframes rainbow{
