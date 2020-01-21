@@ -108,22 +108,36 @@ and (max-width:1300px){
     top:750px;
     left:35px;
 }
+#rulesButton:hover ~ #chat {
+
+    opacity: 0;
+}
+#rulesButton:hover ~ #rules {
+    opacity: 1;
+}
 
 #rules{
     opacity: 0;
+    
 }
-#chat {
+#chat, #rules {
     height: 600px;
     width:550px;
     border: 5px solid gray;
     position: absolute;
     top: 150px;
     right: 30px;
+    padding:5px;
+}
+#chat{
+    opacity:1;
 }
 #submit-text {
     position: absolute;
     top: 780px;
     right: 30px;
+    margin:0.8px;
+    padding: 0.8px;
 }
 #game-state{
     position: absolute;
