@@ -154,11 +154,11 @@ socket.onmessage = function(event){
         from.setAttribute("data-piece", "false");
         if (to.getAttribute("data-row") == "1" && to.children[0].getAttribute("class") == "white-piece") {
             to.children[0].setAttribute("class", "white-king");
-            to.children[0].setAttribute("src", "White-king.png");
+            to.children[0].setAttribute("src", "images/White-king.png");
         }
         if (to.getAttribute("data-row") == "8" && to.children[0].getAttribute("class") == "black-piece") {
             to.children[0].setAttribute("class", "black-king");
-            to.children[0].setAttribute("src", "Black-king.png");
+            to.children[0].setAttribute("src", "images/Black-king.png");
         }
         
 
