@@ -40,7 +40,6 @@ var connectionID = 0;
 
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/audio"));
-http.createServer(app).listen(port);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -212,12 +211,6 @@ wss.on("connection", function(ws) {
         } else {
           gameObj.playerB = null;
         }
-
-        try {
-          gameObj.playerB = null;
-        } catch (e) {
-          console.log("Player B closing: " + e);
-        }
       }
       else if (gameObj.gameState === "1 joined") {
         gameObj.setStatus("0 joined");
@@ -233,6 +226,4 @@ wss.on("connection", function(ws) {
 });
 
 
-module.exports = app;
-
-server.listen(3001);
+server.listen(port);
