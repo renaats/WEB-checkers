@@ -597,10 +597,10 @@ part 1.1:
 
 
 Part 1.2
-	Almost same. The commercial in background was different.
+	Almost same. The commercial in the background was different.
 
 Part 1.3
-	We didnt get x-chache in the response. Transfer-encoding is for telling which type of encoding is used. (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding)
+	We didnt get x-cache in the response. Transfer-encoding is for telling which type of encoding is used. (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding)
 
 Part 1.4
 	OUR RESPONSE: Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
@@ -620,7 +620,7 @@ Part 2.1
 	If it is smaller it puts incomplete data but if the content length is larger then the data we send it expects more data than provided so it gives a bad request.
 
 Part 3.1
-	It doesnt ask. Because browser remembers and when you reload the page it sends a connection with the authorization. (cache)
+	It doesnt ask for authentification because the browser remembers it and when you reload the page it sends a connection with the cerrect authentification.
 
 Part 3.2
 
@@ -682,31 +682,31 @@ Part 3.2
 		X-XSS-Protection: 1; mode=block
 		Connection: keep-alive
 
-	No. Because in one of them we close and open a new connection but the browser doesnt close the connection. (cache)
+	No. Because the browser stores the user authentification and sends it automatically.
 
 Part 4.1
-	draughts
+	Draughts
 
 Part 4.2
 	https://www.247checkers.com/  https://prnt.sc/qlu7cn
-	Positive: It has a nice music. The board has a realistic wood texture.
-	Negative: It doesnt show when you need to make a force move clearly.
+	Positive: It has nice music. The board has a realistic wood texture.
+	Negative: It doesnt clearly show when you need to make a force jump.
 
 	https://cardgames.io/checkers/		https://prnt.sc/qlua4w
-	Positive: It shows you clear that you need to make a force jump. 
-	Negative: The game doesnt make clear that you are playing online or offline. Background is really annoying.
+	Positive: It clearly shows that you need to make a force jump. 
+	Negative: The game doesnt make it clear that you are playing online or offline. Background is really annoying.
 
 	https://www.playok.com/en/russiancheckers/		https://prnt.sc/qlued2
 	Positive: It has a simple minimalistic look.
-	Negative: You need to join to a table with someone which makes it harder to match with an other player. It is not clear which player's move it is.
+	Negative: You need to join a table with someone, therefore, it is harder for a user to start a game. It is not clear which player's move it is.
 
 Part 4.3
 	https://www.247checkers.com/	https://prnt.sc/qlu7cn
-	Positive: it allows you to resume your game after closing the tab. It has a menu. You can take your move back.
+	Positive: It allows you to resume your game after closing the tab. It has a menu. You can undo your move.
 	Negative: 
 
 	https://cardgames.io/checkers/		https://prnt.sc/qlua4w
-	Positive: You can play the game offline or online. It shows how many pieces you get.
+	Positive: You can play the game offline or online. It shows how many pieces you have captured.
 	Negative: The game starts right away without showing a menu.
 
 	https://www.playok.com/en/russiancheckers/		https://prnt.sc/qlued2
