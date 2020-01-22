@@ -17,6 +17,7 @@ Array.from(board.children).forEach(function(cell) {
                 isJump = move.isJump;
                 haveToJump = false;
                 socket.send(JSON.stringify(Messages.O_MOVE_MADE));
+                lastPiece = elem.target;
                 from = null;
             }
             else {
@@ -31,9 +32,12 @@ function isLegalMove(from, to, remove) {
     let toColumn = parseInt(to.getAttribute("data-column"));
     let fromRow = parseInt(from.getAttribute("data-row"));
     let fromColumn = parseInt(from.getAttribute("data-column"));
-    
+
     let legal = isOnBoard(fromRow, fromColumn) && isOnBoard(toRow, toColumn) && to.getAttribute("data-piece") == "false";
     let jump = 0; 
+    if (lastPiece && lastPiece != from) {
+        legal = 0;
+    }
     if ((toRow + toColumn) % 2 != 1 || myTurn != 1) {
         legal = 0;
     }

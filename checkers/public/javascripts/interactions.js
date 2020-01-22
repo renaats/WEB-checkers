@@ -172,6 +172,7 @@ socket.onmessage = function(event){
             if (!haveToJump || !isJump) {
                 socket.send(Messages.S_END_TURN);
                 myTurn = false;
+                lastPiece = null;
             }	
         }
         else {

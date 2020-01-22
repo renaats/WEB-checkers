@@ -13,6 +13,7 @@ let blackSeconds = 0;
 let whiteMinutes = 10;
 let whiteSeconds = 0;
 let ongoing = false;
+let lastPiece = null;
 
 function sound(src) {
     this.sound = document.createElement("audio");
