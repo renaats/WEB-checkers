@@ -3,7 +3,7 @@ Array.from(board.children).forEach(function(cell) {
         if (elem.target.getAttribute("data-piece") === "true") {
             from = elem.target;
         }
-        else {
+        else if (from) {
             let move = isLegalMove(from, elem.target, 1);
             if (from && move.legal && (!haveToJump || move.isJump)) {
                 Messages.O_MOVE_MADE.data.from = {
