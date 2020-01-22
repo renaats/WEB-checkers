@@ -52,14 +52,6 @@
     };
   
     /*
-     * Server to client: abort game (e.g. if second player exited the game)
-     */
-    exports.O_GAME_ABORTED = {
-      type: "GAME-ABORTED"
-    };
-    exports.S_GAME_ABORTED = JSON.stringify(exports.O_GAME_ABORTED);
-  
-    /*
      * Server to client: set as player A
      */
     exports.T_PLAYER_TYPE = "PLAYER-TYPE";
@@ -77,15 +69,6 @@
       data: "B"
     };
     exports.S_PLAYER_B = JSON.stringify(exports.O_PLAYER_B);
-  
-    /*
-     * Server to Player A & B: game over with result won/loss
-     */
-    exports.T_GAME_OVER = "GAME-OVER";
-    exports.O_GAME_OVER = {
-      type: exports.T_GAME_OVER,
-      data: null
-    };
 
     exports.T_MESSAGE = "MESSAGE";
     exports.O_MESSAGE = {
