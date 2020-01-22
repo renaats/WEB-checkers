@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://34ee7b80.ngrok.io");
+var socket = new WebSocket("ws://eb0230ca.ngrok.io");
 var message;
 let element = document.getElementById("submit-text");
 element.addEventListener("submit", function(event) {
