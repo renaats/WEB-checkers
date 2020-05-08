@@ -1,5 +1,5 @@
 # WEB checkers
-A WEB based game of russian checkers.
+A WEB based game of Russian checkers.
 
 # Group members
 * [Renāts Jurševskis](mailto:r.jursevskis@student.tudelft.nl)
