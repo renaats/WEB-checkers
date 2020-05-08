@@ -1,4 +1,5 @@
-var socket = new WebSocket("ws://1bbabef2.ngrok.io");
+var URL = "localhost:3000";
+var socket = new WebSocket("ws://" + URL);
 var message;
 let element = document.getElementById("submit-text");
 element.addEventListener("submit", function(event) {
