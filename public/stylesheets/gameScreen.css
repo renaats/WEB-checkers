@@ -45,16 +45,16 @@ and (max-width:1300px){
     content: "resolution to play this game is higer then your screen's resoulution";
 }
 .white-piece {
-    content: url("../images/White.png");
+    content: url("/images/White.png");
 }
 .black-piece {
-    content: url("../images/Black.png");
+    content: url("/images/Black.png");
 }
 .white-king {
-    content: url("../images/White-king.png");
+    content: url("/images/White-king.png");
 }
 .black-king {
-    content: url("../images/Black-king.png");
+    content: url("/images/Black-king.png");
 }
 
 .board {
@@ -71,10 +71,10 @@ and (max-width:1300px){
     height: 75px;
 }
 .white {
-    background-image: url("../images/white wood.jpg");
+    background-image: url("/images/white wood.jpg");
 }
 .black {
-    background-image: url("../images/dark wood.jpg");
+    background-image: url("/images/dark wood.jpg");
 }
 #blackTimer
 {
